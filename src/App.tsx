@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Pages
@@ -8,13 +8,20 @@ import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
 import ContactPage from './pages/ContactPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from './pages/LoginPage';
+import PremiumPage from './pages/PremiumPage';
+import ProductPage from './pages/ProductPage';
+import LandingPage from './pages/LandingPage';
+import AllImagesPage from './pages/AllImagesPage';
 
 // Components
 import Layout from './components/layout/Layout';
 import CustomCursor from './components/ui/CustomCursor';
+import DesignSwitcher from './components/DesignSwitcher';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isPremium, setIsPremium] = useState(false); // Mock premium state
   
   // Check for user's preferred color scheme
   useEffect(() => {
@@ -43,17 +50,34 @@ function App() {
     setIsDarkMode(!isDarkMode);
   };
 
+  // Premium content route wrapper
+  const PremiumContentRoute = ({ children }: { children: React.ReactNode }) => {
+    if (!isPremium) {
+      return <Navigate to="/premium" replace />;
+    }
+    return <>{children}</>;
+  };
+
   return (
     <>
       <CustomCursor />
+      <DesignSwitcher />
       <Router>
         <Layout isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
           <AnimatePresence mode="wait">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/premium" element={<PremiumPage />} />
+              <Route path="/products" element={<ProductPage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/gallery" element={
+                <PremiumContentRoute>
+                  <GalleryPage />
+                </PremiumContentRoute>
+              } />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/all-images" element={<AllImagesPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </AnimatePresence>

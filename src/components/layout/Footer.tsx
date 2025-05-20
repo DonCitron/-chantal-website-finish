@@ -1,29 +1,55 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Twitter, Facebook, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Instagram, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+
+const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" fill="#1DB954" />
+    <path d="M8 15c2.5-1 5.5-1 8 0" stroke="#fff" strokeWidth="1.5" />
+    <path d="M9 12c2-0.7 4-0.7 6 0" stroke="#fff" strokeWidth="1.5" />
+    <path d="M10 9.5c1.3-0.3 2.7-0.3 4 0" stroke="#fff" strokeWidth="1.2" />
+  </svg>
+);
+
+const LinktreeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2v20" />
+    <path d="M17 7l-5 5-5-5" />
+    <path d="M17 17l-5-5-5 5" />
+  </svg>
+);
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
   
   const socialLinks = [
-    { icon: <Instagram size={18} />, url: 'https://instagram.com', label: 'Instagram' },
-    { icon: <Twitter size={18} />, url: 'https://twitter.com', label: 'Twitter' },
-    { icon: <Facebook size={18} />, url: 'https://facebook.com', label: 'Facebook' },
-    { icon: <Mail size={18} />, url: 'mailto:contact@chantisreflection.com', label: 'Email' },
+    { icon: <SpotifyIcon />, url: 'http://open.spotify.com/show/5aXhid2UTtgioftEV7ESPa', label: 'Spotify' },
+    { icon: <Instagram size={18} />, url: 'https://instagram.com/chantiheulleise', label: 'Instagram' },
+    { icon: <LinktreeIcon />, url: 'https://linktr.ee/chantiheulleise', label: 'Linktree' },
+    { icon: <Mail size={18} />, url: 'mailto:kontakt@openmindcircle.de', label: 'Email' },
   ];
   
   const footerLinks = [
     { text: 'Home', path: '/' },
-    { text: 'About', path: '/about' },
-    { text: 'Gallery', path: '/gallery' },
-    { text: 'Contact', path: '/contact' },
-    { text: 'Privacy Policy', path: '#' },
-    { text: 'Terms of Service', path: '#' },
+    { text: 'Über mich', path: '/#ueber-mich' },
+    { text: 'Mentoring', path: '/#mentoring' },
+    { text: 'Produkte', path: '/#course' },
+    { text: 'Kontakt', path: '/#contact' },
+    { text: 'Impressum', path: '#' },
+    { text: 'Datenschutz', path: '#' },
   ];
 
   return (
-    <footer className="bg-cream-100 dark:bg-charcoal-900 pt-16 pb-8">
+    <footer className="pt-16 pb-8" style={{ background: 'var(--gradient-terra)', color: '#fff' }}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Brand */}
@@ -33,13 +59,12 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl font-serif font-medium mb-4">
-              Chanti's Self Reflection
+            <h3 className="text-2xl font-medium mb-4">
+              Open Mind Circle
               <span className="text-accent-600 dark:text-accent-400">.</span>
             </h3>
-            <p className="text-sm text-charcoal-600 dark:text-charcoal-300 mb-6 max-w-md">
-              Contemporary artist exploring the boundaries between abstraction and figurative art, 
-              focusing on the interplay of light, color, and emotion.
+            <p className="text-sm text-charcoal-200 mb-6 max-w-md">
+              Hier beginnt deine Reise zu mehr Leichtigkeit, Tiefe und Selbstvertrauen mit Chantal Röth.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((link, index) => (
@@ -49,9 +74,9 @@ const Footer: React.FC = () => {
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label={link.label}
-                  className="p-2 rounded-full border border-charcoal-200 dark:border-charcoal-700 
-                           hover:bg-accent-100 dark:hover:bg-charcoal-800 
-                           hover:border-accent-400 dark:hover:border-accent-600
+                  className="p-2 rounded-full border border-white/30 
+                           hover:bg-white/10
+                           hover:border-white/50
                            transition-all duration-300"
                 >
                   {link.icon}
@@ -67,14 +92,14 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-serif font-medium mb-4">Quick Links</h3>
-            <ul className="grid grid-cols-2 gap-2">
+            <h3 className="text-lg font-medium mb-4">Seiten</h3>
+            <ul className="grid grid-cols-1 gap-2">
               {footerLinks.map((link, index) => (
                 <li key={index}>
                   <Link 
                     to={link.path}
-                    className="text-sm text-charcoal-600 dark:text-charcoal-300 hover:text-accent-600 
-                              dark:hover:text-accent-400 transition-colors duration-300"
+                    className="text-sm text-charcoal-200 hover:text-white 
+                              transition-colors duration-300"
                   >
                     {link.text}
                   </Link>
@@ -83,42 +108,50 @@ const Footer: React.FC = () => {
             </ul>
           </motion.div>
           
-          {/* Newsletter */}
+          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg font-serif font-medium mb-4">Stay Updated</h3>
-            <p className="text-sm text-charcoal-600 dark:text-charcoal-300 mb-4">
-              Subscribe to receive updates on new artworks, exhibitions, and events.
-            </p>
-            <form className="flex">
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                className="px-4 py-2 w-full bg-white dark:bg-charcoal-800 border border-charcoal-200 
-                         dark:border-charcoal-700 rounded-l focus:outline-none focus:ring-1 
-                         focus:ring-accent-400 text-sm"
-                aria-label="Email address"
-              />
-              <button 
-                type="submit" 
-                className="bg-accent-600 hover:bg-accent-700 text-white px-4 py-2 rounded-r 
-                         text-sm font-medium transition-colors duration-300"
-              >
-                Subscribe
-              </button>
-            </form>
+            <h3 className="text-lg font-medium mb-4">Kontakt</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-charcoal-200">
+                <Mail size={16} />
+                <a href="mailto:kontakt@openmindcircle.de" className="text-sm hover:text-white transition-colors duration-300">
+                  kontakt@openmindcircle.de
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-charcoal-200">
+                <Phone size={16} />
+                <span className="text-sm">+49 123 456789</span>
+              </li>
+              <li className="flex items-start gap-2 text-charcoal-200 mt-2">
+                <MapPin size={16} style={{ marginTop: 2 }} />
+                <span className="text-sm">
+                  Open Mind Circle<br />
+                  Beispielstraße 123<br />
+                  12345 Beispielstadt
+                </span>
+              </li>
+            </ul>
           </motion.div>
         </div>
         
         {/* Copyright */}
-        <div className="pt-8 border-t border-charcoal-200 dark:border-charcoal-800 text-center">
-          <p className="text-xs text-charcoal-500 dark:text-charcoal-400">
-            © {currentYear} Chanti's Self Reflection. All rights reserved.
+        <div className="pt-8 border-t border-white/20 flex justify-between items-center">
+          <p className="text-sm text-charcoal-200">
+            © {currentYear} Open Mind Circle. Alle Rechte vorbehalten.
           </p>
+          
+          <button 
+            onClick={handleScrollToTop} 
+            className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-300"
+            aria-label="Nach oben scrollen"
+          >
+            <ArrowUp size={20} />
+          </button>
         </div>
       </div>
     </footer>

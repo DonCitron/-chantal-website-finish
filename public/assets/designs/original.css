@@ -1,0 +1,30 @@
+/* Originales Design CSS */
+:root {
+  --section-bg: #fff;
+  --section-bg-alt: #f7f7f7;
+  --earth-rose: #9C7462;
+  --sand-yellow: #D9BA7F;
+  --terracotta: #D17C6B;
+  --deep-gray: #232326;
+  --base-beige: #F4EFE9;
+  --text-color: #232326;
+}
+
+section {
+  background: var(--base-beige);
+}
+
+.dark {
+  --section-bg: #18181b;
+  --section-bg-alt: #232326;
+  --earth-rose: #D17C6B;
+  --sand-yellow: #F1D8A1;
+  --deep-gray: #232326;
+  --base-beige: #232326;
+  --text-color: #F8F5F2;
+}
+
+footer {
+  background: var(--earth-rose);
+  color: #fff;
+}

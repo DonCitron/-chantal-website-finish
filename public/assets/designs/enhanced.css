@@ -1,0 +1,85 @@
+/* Verbessertes Design CSS */
+:root {
+  --section-bg: #fff;
+  --section-bg-alt: #f7f7f7;
+  --earth-rose: #9C7462;
+  --sand-yellow: #D9BA7F;
+  --terracotta: #D17C6B;
+  --deep-gray: #232326;
+  --base-beige: #F4EFE9;
+  --text-color: #232326;
+  
+  /* Farbverlauf-Variablen */
+  --gradient-light: linear-gradient(135deg, #F4EFE9 0%, #F8F5F2 100%);
+  --gradient-accent: linear-gradient(135deg, #D9BA7F 0%, #E8D4B2 100%);
+  --gradient-rose: linear-gradient(135deg, #9C7462 0%, #BA9685 100%);
+  --gradient-terra: linear-gradient(135deg, #D17C6B 0%, #E8A498 100%);
+}
+
+.dark {
+  --section-bg: #18181b;
+  --section-bg-alt: #232326;
+  --earth-rose: #D17C6B;
+  --sand-yellow: #F1D8A1;
+  --deep-gray: #232326;
+  --base-beige: #232326;
+  --text-color: #F8F5F2;
+}
+
+.highlight-word {
+  color: var(--terracotta);
+  position: relative;
+  font-weight: 700;
+}
+
+.highlight-word::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--terracotta);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: right;
+}
+
+.highlight-word:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Section transition */
+.section-transition {
+  position: relative;
+}
+
+.section-transition::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom right, transparent 49.5%, var(--section-bg) 50%);
+  z-index: 5;
+}
+
+.dark .section-transition::before {
+  background: linear-gradient(to bottom right, transparent 49.5%, var(--section-bg-alt) 50%);
+}
+
+footer {
+  background: var(--gradient-terra);
+  color: #fff;
+}
+
+.section-decorative-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--gradient-terra);
+}

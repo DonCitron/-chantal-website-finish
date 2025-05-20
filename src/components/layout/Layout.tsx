@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isDarkMode, toggleDarkMode })
   return (
     <div className="flex flex-col min-h-screen">
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      <main id="main" className="flex-grow pt-24">
+      <main id="main" className="flex-grow">
         {children}
       </main>
       <Footer />
