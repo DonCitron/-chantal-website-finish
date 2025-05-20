@@ -649,9 +649,10 @@ const LandingPage: React.FC = () => {
           
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: isDesktop ? 'repeat(3, 1fr)' : '1fr',
+            gridTemplateColumns: isDesktop ? '1fr' : '1fr',
             gap: 32,
-            margin: '40px auto'
+            margin: '40px auto',
+            maxWidth: '500px'
           }}>
             {/* Produkt 1 */}
             <div style={{ 
@@ -706,126 +707,6 @@ const LandingPage: React.FC = () => {
                 }}
               >
                 Jetzt ansehen & kaufen
-              </a>
-            </div>
-            
-            {/* Produkt 2 */}
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.8)',
-              borderRadius: 16,
-              padding: 24,
-              boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-8px)';
-              e.currentTarget.style.boxShadow = '0 12px 30px rgba(156,116,98,0.15)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.1)';
-            }}>
-              <div style={{ 
-                width: 220, 
-                height: 220, 
-                borderRadius: 12, 
-                background: 'linear-gradient(135deg, #D17C6B, #E6A27C)', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                color: 'white',
-                marginBottom: 20,
-                boxShadow: '0 4px 12px rgba(156,116,98,0.2)'
-              }}>
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10 22v-8h4v8h5V8.93c0-.5-.23-.97-.63-1.29L12 2.589l-6.37 5.05c-.4.32-.63.78-.63 1.29V22h5z" />
-                </svg>
-              </div>
-              <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Meditationsbundle</h3>
-              <p style={{ fontSize: 20, color: '#D17C6B', fontWeight: 600, marginBottom: 12 }}>24,90 €</p>
-              <p style={{ fontSize: 16, color: '#888', marginBottom: 16 }}>Audio-Download</p>
-              <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>
-                5 geführte Meditationen zu den Themen Klarheit, Selbstliebe, Loslassen, Vertrauen und innere Ruhe.
-              </p>
-              <a 
-                href="#" 
-                style={{ 
-                  display: 'inline-block',
-                  background: '#D17C6B',
-                  color: '#fff',
-                  padding: '10px 20px',
-                  borderRadius: 8,
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  marginTop: 'auto'
-                }}
-              >
-                Demnächst verfügbar
-              </a>
-            </div>
-            
-            {/* Produkt 3 */}
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.8)',
-              borderRadius: 16,
-              padding: 24,
-              boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-8px)';
-              e.currentTarget.style.boxShadow = '0 12px 30px rgba(156,116,98,0.15)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.1)';
-            }}>
-              <div style={{ 
-                width: 220, 
-                height: 220, 
-                borderRadius: 12, 
-                background: 'linear-gradient(135deg, #D17C6B, #E6A27C)', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                color: 'white',
-                marginBottom: 20,
-                boxShadow: '0 4px 12px rgba(156,116,98,0.2)'
-              }}>
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                </svg>
-              </div>
-              <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>1:1 Einzelcoaching</h3>
-              <p style={{ fontSize: 20, color: '#D17C6B', fontWeight: 600, marginBottom: 12 }}>ab 99 €</p>
-              <p style={{ fontSize: 16, color: '#888', marginBottom: 16 }}>60 Minuten Online-Session</p>
-              <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>
-                Persönliche 1:1 Calls für direkte Klarheit zu deinem individuellen Thema mit konkreten nächsten Schritten.
-              </p>
-              <a 
-                href="https://tally.so/r/m65xDk" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ 
-                  display: 'inline-block',
-                  background: '#D17C6B',
-                  color: '#fff',
-                  padding: '10px 20px',
-                  borderRadius: 8,
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  marginTop: 'auto'
-                }}
-              >
-                Termin vereinbaren
               </a>
             </div>
           </div>

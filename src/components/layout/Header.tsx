@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
   useEffect(() => {
     const handleScrollSpy = () => {
       let found = false;
-      const headerHeight = headerRef.current?.offsetHeight || 80;
+      const headerHeight = headerRef.current?.offsetHeight || 100;
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const section = document.getElementById(sectionIds[i]);
         if (section) {
@@ -136,17 +136,28 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
       } ${showHeader ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'} transition-transform transition-opacity duration-300`}
     >
       <div className="w-full flex flex-col items-center bg-cream-50/95 dark:bg-charcoal-900/95 backdrop-blur-sm">
-        <div className="flex items-center justify-between w-full max-w-6xl mx-auto px-4 py-2">
-          <div className="flex-1 md:flex-none">
-            {/* Logo / Brand */}
-            <a href="/" className="text-xl font-medium text-[#3B3737] dark:text-white">
-              Open<span style={{ color: '#D17C6B' }}>Mind</span>
-            </a>
-          </div>
+        {/* Logo / Brand centered in top bar */}
+        <div className="flex items-center justify-center w-full px-4 py-3">
+          <a href="/" className="text-3xl font-medium text-[#3B3737] dark:text-white text-center">
+            Open <span style={{ color: '#D17C6B' }}>Mind</span> <span className="text-[#3B3737] dark:text-white">Circle</span>
+          </a>
           
-          {/* Desktop Navigation */}
-          {isDesktop && (
-            <nav className="hidden md:flex items-center space-x-8">
+          {/* Dark Mode Toggle positioned absolute right */}
+          <div className="absolute right-4">
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center p-2 rounded-full hover:bg-charcoal-100 dark:hover:bg-charcoal-800 transition-colors"
+              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+          </div>
+        </div>
+        
+        {/* Navigation Bar below logo */}
+        <div className="w-full border-t border-gray-200 dark:border-gray-800">
+          {isDesktop ? (
+            <nav className="flex items-center justify-center space-x-12 py-4 px-4">
               <a 
                 href="#home" 
                 onClick={handleNavClick('home')} 
@@ -173,7 +184,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 onClick={handleNavClick('course')} 
                 className={`whitespace-nowrap text-[#3B3737] dark:text-white hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-300 ${activeSection === 'course' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
               >
-                Produkte
+                Coaching
               </a>
               <a 
                 href="#contact" 
@@ -183,130 +194,70 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 Kontakt
               </a>
             </nav>
-          )}
-          
-          <div className="flex items-center gap-3 flex-1 md:flex-none justify-end">
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="flex items-center p-2 rounded-full hover:bg-charcoal-100 dark:hover:bg-charcoal-800 transition-colors"
-              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-              style={{ fontSize: 20 }}
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex items-center p-2 ml-1 rounded-full bg-charcoal-100 dark:bg-charcoal-800 transition-colors md:hidden"
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-            
-            {/* Call to Action Button (Desktop) */}
-            {isDesktop && (
-              <a
-                href="https://tally.so/r/m65xDk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-4 px-4 py-2 bg-[#D17C6B] text-white rounded-lg text-sm font-semibold hover:bg-opacity-90 transition-all duration-300 transform hover:-translate-y-1"
+          ) : (
+            <div className="flex items-center justify-end py-2 px-4">
+              {/* Mobile Menu Button */}
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-[#3B3737] dark:text-white"
+                aria-label="Open mobile menu"
               >
-                Kostenlos Kennenlernen
-              </a>
-            )}
-          </div>
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          )}
         </div>
+        
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="w-full bg-cream-50/95 dark:bg-charcoal-900/95 overflow-hidden"
+            >
+              <nav className="flex flex-col p-4 space-y-4">
+                <a 
+                  href="#home" 
+                  onClick={handleNavClick('home')} 
+                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'home' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                >
+                  Start
+                </a>
+                <a 
+                  href="#ueber-mich" 
+                  onClick={handleNavClick('ueber-mich')} 
+                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'ueber-mich' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                >
+                  Über mich
+                </a>
+                <a 
+                  href="#mentoring" 
+                  onClick={handleNavClick('mentoring')} 
+                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'mentoring' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                >
+                  Mentoring
+                </a>
+                <a 
+                  href="#course" 
+                  onClick={handleNavClick('course')} 
+                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'course' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                >
+                  Coaching
+                </a>
+                <a 
+                  href="#contact" 
+                  onClick={handleNavClick('contact')} 
+                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'contact' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                >
+                  Kontakt
+                </a>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div 
-            className="md:hidden fixed top-[60px] left-0 right-0 bg-cream-50/98 dark:bg-charcoal-900/98 shadow-md z-30 backdrop-blur-sm"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <nav className="container mx-auto py-6 px-6">
-              <ul className="flex flex-col space-y-4 text-lg">
-                <li>
-                  <a href="#home" onClick={handleNavClick('home')} className={`block py-2 text-[#3B3737] dark:text-white ${activeSection === 'home' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}>
-                    Start
-                  </a>
-                </li>
-                <li>
-                  <a href="#ueber-mich" onClick={handleNavClick('ueber-mich')} className={`block py-2 text-[#3B3737] dark:text-white ${activeSection === 'ueber-mich' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}>
-                    Über mich
-                  </a>
-                </li>
-                <li>
-                  <a href="#mentoring" onClick={handleNavClick('mentoring')} className={`block py-2 text-[#3B3737] dark:text-white ${activeSection === 'mentoring' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}>
-                    Mentoring
-                  </a>
-                </li>
-                <li>
-                  <a href="#course" onClick={handleNavClick('course')} className={`block py-2 text-[#3B3737] dark:text-white ${activeSection === 'course' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}>
-                    Produkte
-                  </a>
-                </li>
-                <li>
-                  <a href="#contact" onClick={handleNavClick('contact')} className={`block py-2 text-[#3B3737] dark:text-white ${activeSection === 'contact' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}>
-                    Kontakt
-                  </a>
-                </li>
-                
-                {/* Mobile CTA */}
-                <li className="pt-4 border-t border-charcoal-200 dark:border-charcoal-700 mt-2">
-                  <a
-                    href="https://tally.so/r/m65xDk"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full text-center py-3 px-4 bg-[#D17C6B] text-white rounded-lg font-semibold"
-                  >
-                    Kostenlos Kennenlernen
-                  </a>
-                </li>
-                
-                {/* Mobile Social Links */}
-                <li className="pt-4 mt-2">
-                  <div className="flex items-center space-x-5 py-2 justify-center">
-                    <a 
-                      href="http://open.spotify.com/show/5aXhid2UTtgioftEV7ESPa" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      aria-label="Spotify" 
-                      className="text-[#3B3737] dark:text-white p-2 hover:scale-110 transition-transform"
-                    >
-                      <SpotifyIcon style={{ width: 28, height: 28 }} />
-                    </a>
-                    <a 
-                      href="https://www.instagram.com/chantiheulleise/" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      aria-label="Instagram" 
-                      className="text-[#3B3737] dark:text-white p-2 hover:scale-110 transition-transform"
-                    >
-                      <Instagram size={28} />
-                    </a>
-                    <a 
-                      href="https://linktr.ee/chantiheulleise" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      aria-label="Linktree" 
-                      className="text-[#3B3737] dark:text-white p-2 hover:scale-110 transition-transform"
-                    >
-                      <LinktreeIcon style={{ width: 28, height: 28 }} />
-                    </a>
-                  </div>
-                </li>
-              </ul>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 };
