@@ -58,13 +58,15 @@
   
   .nav-link {
     @apply relative px-2 py-1 font-sans text-sm uppercase transition-colors duration-300;
-    color: #9C7462 !important;
+    color: #3B3737 !important;
     font-weight: 600;
     letter-spacing: 0.12em;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
   }
   
   .nav-link:hover {
     color: #D17C6B !important;
+    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.3);
   }
   
   .nav-link.active {
@@ -72,6 +74,23 @@
     border: none !important;
     background: none !important;
     box-shadow: none !important;
+    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.3);
+  }
+  
+  /* Dark mode navigation colors */
+  .dark .nav-link {
+    color: #F8F5F2 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  
+  .dark .nav-link:hover {
+    color: #D17C6B !important;
+    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.5);
+  }
+  
+  .dark .nav-link.active {
+    color: #D17C6B !important;
+    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.5);
   }
   
   .image-gallery {

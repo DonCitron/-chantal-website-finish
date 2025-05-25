@@ -131,11 +131,17 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
       ref={headerRef}
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-cream-50/95 dark:bg-charcoal-900/95 backdrop-blur-sm py-2 shadow-md' 
-          : 'bg-transparent py-3'
+          ? 'bg-cream-50/98 dark:bg-charcoal-900/98 backdrop-blur-md py-2 shadow-md' 
+          : 'bg-cream-50/95 dark:bg-charcoal-900/95 backdrop-blur-sm py-3'
       } ${showHeader ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'} transition-transform transition-opacity duration-300`}
     >
-      <div className="w-full flex flex-col items-center bg-cream-50/95 dark:bg-charcoal-900/95 backdrop-blur-sm">
+      <div className="w-full flex flex-col items-center bg-cream-50/98 dark:bg-charcoal-900/98 backdrop-blur-md shadow-sm"
+      style={{
+        background: isDarkMode 
+          ? 'rgba(35, 35, 38, 0.98)' 
+          : 'rgba(244, 239, 233, 0.98)',
+        borderBottom: '1px solid rgba(209, 124, 107, 0.2)'
+      }}>
         {/* Logo / Brand centered in top bar */}
         <div className="flex items-center justify-center w-full px-4 py-3">
           <a href="/" className="text-3xl font-bold text-center">
@@ -225,7 +231,12 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="w-full bg-cream-50/95 dark:bg-charcoal-900/95 overflow-hidden"
+              className="w-full bg-cream-50/98 dark:bg-charcoal-900/98 overflow-hidden"
+              style={{
+                background: isDarkMode 
+                  ? 'rgba(35, 35, 38, 0.98)' 
+                  : 'rgba(244, 239, 233, 0.98)'
+              }}
             >
               <nav className="flex flex-col p-4 space-y-4">
                 <a 
