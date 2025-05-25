@@ -16,7 +16,10 @@
     "mcp:start-memory": "npx @modelcontextprotocol/server-memory",
     "mcp:start-puppeteer": "npx @modelcontextprotocol/server-puppeteer",
     "mcp:start-context7": "npx @upstash/context7-mcp",
-    "mcp": "node start-mcp-servers.js"
+    "mcp": "node start-mcp-servers.js",
+    "start:mcp": "node start-mcp-servers.js",
+    "start:localhost-viewer": "npx @modelcontextprotocol/server-puppeteer",
+    "test:puppeteer": "node test-puppeteer.js"
   },
   "dependencies": {
     "aos": "^2.3.4",
@@ -46,6 +49,7 @@
     "globals": "^15.9.0",
     "playwright": "^1.52.0",
     "postcss": "^8.5.3",
+    "puppeteer": "^24.9.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",

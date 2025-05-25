@@ -88,6 +88,17 @@ try {
     console.log(`${colors.yellow}⚠ Context7 MCP Server not configured${colors.reset}`);
   }
   
+  // Validate Localhost Viewer configuration
+  if (mcpConfig.mcpServers?.['localhost-viewer']) {
+    console.log(`${colors.green}✓ Localhost Viewer MCP Server configured${colors.reset}`);
+    
+    if (!mcpConfig.mcpServers['localhost-viewer'].env?.PUPPETEER_START_URL) {
+      console.log(`${colors.yellow}⚠ Warning: Localhost viewer URL not configured${colors.reset}`);
+    }
+  } else {
+    console.log(`${colors.yellow}⚠ Localhost Viewer MCP Server not configured${colors.reset}`);
+  }
+  
   // Ask which servers to start
   console.log('\n');
   rl.question(`${colors.bright}Which servers would you like to start?${colors.reset}\n` + 
@@ -98,6 +109,7 @@ try {
     `5. ${colors.cyan}Memory server only${colors.reset}\n` + 
     `6. ${colors.cyan}Puppeteer server only${colors.reset}\n` + 
     `7. ${colors.cyan}Context7 server only${colors.reset}\n` + 
+    `8. ${colors.cyan}Localhost Viewer server only${colors.reset}\n` + 
     `> `, (answer) => {
     
     let command = '';
@@ -138,6 +150,13 @@ try {
         console.log(`\n${colors.green}Starting Context7 MCP server...${colors.reset}`);
         command = 'npx';
         args = ['@upstash/context7-mcp'];
+        break;
+      case '8':
+        console.log(`\n${colors.green}Starting Localhost Viewer MCP server...${colors.reset}`);
+        command = 'npx';
+        const env = mcpConfig.mcpServers['localhost-viewer'].env || {};
+        process.env.PUPPETEER_START_URL = env.PUPPETEER_START_URL || 'http://localhost:5177/';
+        args = ['@modelcontextprotocol/server-puppeteer'];
         break;
       default:
         console.log(`\n${colors.yellow}Invalid option. Exiting.${colors.reset}`);

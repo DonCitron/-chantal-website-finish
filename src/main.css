@@ -155,6 +155,7 @@ button:hover, .button:hover {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(224, 122, 95, 0.3); /* Added subtle box shadow */
 }
 
 /* Accessibility improvements */

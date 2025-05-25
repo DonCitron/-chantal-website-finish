@@ -31,6 +31,13 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
       "env": {}
+    },
+    "localhost-viewer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "env": {
+        "PUPPETEER_START_URL": "http://localhost:5185/"
+      }
     }
   }
-} 
+}

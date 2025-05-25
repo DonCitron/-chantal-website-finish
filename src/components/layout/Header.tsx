@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const sectionIds = ['home', 'ueber-mich', 'mentoring', 'course', 'contact'];
+  const sectionIds = ['home', 'ueber-mich', 'mentoring', 'course', 'kontakt'];
   const [activeSection, setActiveSection] = useState('home');
   
   const [menuOpen, setMenuOpen] = useState(false);
@@ -138,14 +138,17 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
       <div className="w-full flex flex-col items-center bg-cream-50/95 dark:bg-charcoal-900/95 backdrop-blur-sm">
         {/* Logo / Brand centered in top bar */}
         <div className="flex items-center justify-center w-full px-4 py-3">
-          <a href="/" className="text-3xl font-medium text-[#3B3737] dark:text-white text-center">
-            Open <span style={{ color: '#D17C6B' }}>Mind</span> <span className="text-[#3B3737] dark:text-white">Circle</span>
+          <a href="/" className="text-3xl font-bold text-center">
+            Open <span style={{ color: '#D17C6B' }}>Mind</span> <span style={{ color: '#3B3737' }} className="dark:text-white">Circle</span>
           </a>
           
           {/* Dark Mode Toggle positioned absolute right */}
           <div className="absolute right-4">
             <button
-              onClick={toggleDarkMode}
+              onClick={() => {
+                toggleDarkMode();
+                localStorage.setItem('colorMode', document.documentElement.classList.contains('dark') ? 'light' : 'dark');
+              }}
               className="flex items-center p-2 rounded-full hover:bg-charcoal-100 dark:hover:bg-charcoal-800 transition-colors"
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
@@ -161,35 +164,42 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
               <a 
                 href="#home" 
                 onClick={handleNavClick('home')} 
-                className={`whitespace-nowrap text-[#3B3737] dark:text-white hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-300 ${activeSection === 'home' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                className={`nav-link${activeSection === 'home' ? ' active' : ''}`}
               >
                 Start
               </a>
               <a 
                 href="#ueber-mich" 
                 onClick={handleNavClick('ueber-mich')} 
-                className={`whitespace-nowrap text-[#3B3737] dark:text-white hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-300 ${activeSection === 'ueber-mich' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                className={`nav-link${activeSection === 'ueber-mich' ? ' active' : ''}`}
               >
                 Über mich
               </a>
               <a 
                 href="#mentoring" 
                 onClick={handleNavClick('mentoring')} 
-                className={`whitespace-nowrap text-[#3B3737] dark:text-white hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-300 ${activeSection === 'mentoring' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                className={`nav-link${activeSection === 'mentoring' ? ' active' : ''}`}
               >
                 Mentoring
               </a>
               <a 
-                href="#course" 
-                onClick={handleNavClick('course')} 
-                className={`whitespace-nowrap text-[#3B3737] dark:text-white hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-300 ${activeSection === 'course' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                href="#testimonials" 
+                onClick={handleNavClick('testimonials')} 
+                className={`nav-link${activeSection === 'testimonials' ? ' active' : ''}`}
               >
-                Coaching
+                Kundenfeedback
               </a>
               <a 
-                href="#contact" 
-                onClick={handleNavClick('contact')} 
-                className={`whitespace-nowrap text-[#3B3737] dark:text-white hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-300 ${activeSection === 'contact' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                href="#course" 
+                onClick={handleNavClick('course')} 
+                className={`nav-link${activeSection === 'course' ? ' active' : ''}`}
+              >
+                Produkte
+              </a>
+              <a 
+                href="#kontakt" 
+                onClick={handleNavClick('kontakt')} 
+                className={`nav-link${activeSection === 'kontakt' ? ' active' : ''}`}
               >
                 Kontakt
               </a>
@@ -221,35 +231,42 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 <a 
                   href="#home" 
                   onClick={handleNavClick('home')} 
-                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'home' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                  className={`nav-link${activeSection === 'home' ? ' active' : ''}`}
                 >
                   Start
                 </a>
                 <a 
                   href="#ueber-mich" 
                   onClick={handleNavClick('ueber-mich')} 
-                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'ueber-mich' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                  className={`nav-link${activeSection === 'ueber-mich' ? ' active' : ''}`}
                 >
                   Über mich
                 </a>
                 <a 
                   href="#mentoring" 
                   onClick={handleNavClick('mentoring')} 
-                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'mentoring' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                  className={`nav-link${activeSection === 'mentoring' ? ' active' : ''}`}
                 >
                   Mentoring
                 </a>
                 <a 
-                  href="#course" 
-                  onClick={handleNavClick('course')} 
-                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'course' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                  href="#testimonials" 
+                  onClick={handleNavClick('testimonials')} 
+                  className={`nav-link${activeSection === 'testimonials' ? ' active' : ''}`}
                 >
-                  Coaching
+                  Kundenfeedback
                 </a>
                 <a 
-                  href="#contact" 
-                  onClick={handleNavClick('contact')} 
-                  className={`text-[#3B3737] dark:text-white text-lg ${activeSection === 'contact' ? 'text-accent-600 dark:text-accent-400 font-semibold' : ''}`}
+                  href="#course" 
+                  onClick={handleNavClick('course')} 
+                  className={`nav-link${activeSection === 'course' ? ' active' : ''}`}
+                >
+                  Produkte
+                </a>
+                <a 
+                  href="#kontakt" 
+                  onClick={handleNavClick('kontakt')} 
+                  className={`nav-link${activeSection === 'kontakt' ? ' active' : ''}`}
                 >
                   Kontakt
                 </a>

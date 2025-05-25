@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Calendar, FileText, Clock, Check, Download } from 'lucide-react';
+import { Calendar, FileText, Check } from 'lucide-react';
 
 // Produkt-Datenstruktur für bessere Wartbarkeit
 interface ProductFeature {
@@ -184,8 +184,8 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ isDesktop }) => {
           >
             {/* Product Icon */}
             <div style={{ 
-              width: 100, 
-              height: 100, 
+              width: '100px', 
+              height: '100px', 
               margin: '40px auto 20px',
               background: '#D17C6B20',
               borderRadius: 12,

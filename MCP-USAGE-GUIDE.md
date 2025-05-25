@@ -213,4 +213,42 @@ If you encounter issues:
 For more information, refer to the official documentation:
 - [Brave Search API](https://brave.com/search/api/)
 - [GitHub API](https://docs.github.com/en/rest)
-- [MCP Protocol](https://github.com/anthropics/anthropic-cookbook/tree/main/mcp) 
+- [MCP Protocol](https://github.com/anthropics/anthropic-cookbook/tree/main/mcp)
+
+## Available MCP Servers
+
+### 1. Brave Search MCP
+- **Purpose**: Enables web search capabilities
+- **Configuration**: Requires a Brave API key in `mcp.json`
+- **Example usage**: `Ask the Brave Search MCP to find information about...`
+
+### 2. GitHub MCP
+- **Purpose**: Allows interaction with GitHub repositories
+- **Configuration**: Requires a GitHub token in `mcp.json`
+- **Example usage**: `Use the GitHub MCP to find repositories about...`
+
+### 3. Sequential Thinking MCP
+- **Purpose**: Enhances reasoning capabilities through step-by-step thinking
+- **Configuration**: No additional configuration required
+- **Example usage**: `Let's use sequential thinking to solve this problem...`
+
+### 4. Memory MCP
+- **Purpose**: Stores and retrieves conversation context
+- **Configuration**: No additional configuration required
+- **Example usage**: `Can you remember what we discussed about...`
+
+### 5. Puppeteer MCP
+- **Purpose**: Enables web automation and scraping
+- **Configuration**: No additional configuration required
+- **Example usage**: `Use Puppeteer to visit and analyze the page at...`
+
+### 6. Context7 MCP
+- **Purpose**: Provides up-to-date documentation for libraries and frameworks
+- **Configuration**: No additional configuration required
+- **Example usage**: `Check the documentation for React hooks...`
+
+### 7. Localhost Viewer MCP
+- **Purpose**: Allows the AI to view and analyze your local development server
+- **Configuration**: Configured to use http://localhost:5177/ by default
+- **Usage**: Run `npm run start:localhost-viewer` while your development server is running
+- **Example usage**: `Please view my local site and tell me what you see` 

@@ -16,8 +16,6 @@ import AllImagesPage from './pages/AllImagesPage';
 
 // Components
 import Layout from './components/layout/Layout';
-import CustomCursor from './components/ui/CustomCursor';
-import DesignSwitcher from './components/DesignSwitcher';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -60,8 +58,6 @@ function App() {
 
   return (
     <>
-      <CustomCursor />
-      <DesignSwitcher />
       <Router>
         <Layout isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
           <AnimatePresence mode="wait">

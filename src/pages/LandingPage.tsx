@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, CSSProperties } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Instagram } from 'lucide-react';
 import AOS from 'aos';
@@ -8,6 +8,8 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+import ImageCard from '../components/ui/ImageCard'; // Import ImageCard component
 
 const sectionStyle = {
   padding: '80px 0',
@@ -43,11 +45,41 @@ interface Testimonial {
   image?: string;
 }
 
+// Wiederverwendbare Styles für Produktbox und Button
+const productBoxStyle = (isDesktop: boolean): CSSProperties => ({
+  background: 'rgba(255, 255, 255, 0.8)',
+  borderRadius: 16,
+  padding: isDesktop ? 24 : 16,
+  boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
+  transition: 'transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s cubic-bezier(.4,2,.6,1)',
+  textAlign: 'center' as const,
+  display: 'flex' as const,
+  flexDirection: 'column' as const,
+  alignItems: 'center' as const,
+  maxWidth: isDesktop ? 400 : '100%',
+  width: '100%',
+  minWidth: 0,
+  cursor: 'pointer'
+});
+
+const productButtonStyle = (isDesktop: boolean): CSSProperties => ({
+  display: 'inline-block',
+  background: '#D17C6B',
+  color: '#fff',
+  padding: isDesktop ? '10px 20px' : '10px 0',
+  borderRadius: 8,
+  textDecoration: 'none',
+  fontWeight: 600,
+  marginTop: 'auto',
+  width: isDesktop ? 'auto' : '100%',
+  outline: 'none',
+  transition: 'background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.1s',
+});
+
 const LandingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   // Testimonials data
   const testimonials: Testimonial[] = [
     {
@@ -92,6 +124,17 @@ const LandingPage: React.FC = () => {
   }, []);
 
   const isDesktop = windowWidth >= 1024;
+
+  // Darkmode-Status ermitteln
+  const [isDarkMode, setIsDarkMode] = useState(
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   return (
     <div style={{ width: '100%', overflowX: 'hidden', paddingTop: 0 }} role="main">
@@ -160,21 +203,12 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <section 
-        id="home" 
-        data-aos="fade-up" 
-        style={{ 
-          position: 'relative', 
-          width: '100%', 
-          minHeight: '90vh', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          padding: 0, 
-          margin: 0 
-        }}
+      <section
+        id="home"
+        data-aos="fade-up"
+        className="hero-section" // Using the new CSS class
       >
-        <div className="hero-image-container" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden' }}>
+        <div className="hero-image-container"> {/* Using the new CSS class */}
           <img
             src="/WhatsApp Image 2025-05-19 at 20.37.49.jpeg"
             alt="Abstraktes Gold-Weiß Bild mit künstlerischen Pinselstrichen"
@@ -201,7 +235,7 @@ const LandingPage: React.FC = () => {
             left: 0, 
             width: '100%', 
             height: '100%', 
-            background: document.documentElement.classList.contains('dark') ? 'rgba(35,35,38,0.82)' : 'rgba(255,255,255,0.32)', 
+            background: 'rgba(35,35,38,0.65)', 
             zIndex: 2 
           }} 
         />
@@ -223,8 +257,8 @@ const LandingPage: React.FC = () => {
               fontWeight: 700, 
               marginBottom: 16, 
               letterSpacing: -1, 
-              color: '#3B3737', 
-              textShadow: '0 2px 8px rgba(244,239,233,0.18)',
+              color: '#FFFFFF', 
+              textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               animation: 'fade-in 1s ease-out'
             }}
           >
@@ -236,8 +270,8 @@ const LandingPage: React.FC = () => {
               fontSize: isDesktop ? 26 : 20, 
               fontWeight: 400, 
               marginBottom: 32, 
-              color: '#3B3737', 
-              textShadow: '0 2px 8px rgba(244,239,233,0.18)',
+              color: '#FFFFFF', 
+              textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               lineHeight: 1.5,
               maxWidth: '700px',
               margin: '0 auto 40px'
@@ -253,7 +287,8 @@ const LandingPage: React.FC = () => {
             justifyContent: 'center', 
             maxWidth: isDesktop ? '100%' : '320px', 
             margin: '0 auto' 
-          }}>
+          }}
+          >
             <a
               href="#mentoring"
               onClick={handleNavScroll('mentoring')}
@@ -267,18 +302,18 @@ const LandingPage: React.FC = () => {
                 padding: isDesktop ? '16px 32px' : '14px 0', 
                 width: isDesktop ? 'auto' : '100%', 
                 textDecoration: 'none', 
-                boxShadow: '0 4px 12px rgba(156,116,98,0.2)', 
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
                 letterSpacing: 0.2, 
                 textShadow: '0 1px 4px rgba(44,44,44,0.10)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 8px 16px rgba(156,116,98,0.25)';
+                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.25)';
               }}
               onMouseOut={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(156,116,98,0.2)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
               }}
             >
               Positive Mind Mentoring
@@ -287,52 +322,31 @@ const LandingPage: React.FC = () => {
               href="#ueber-mich"
               onClick={handleNavScroll('ueber-mich')}
               style={{ 
-                background: 'rgba(255,255,255,0.85)', 
-                color: '#D17C6B', 
+                background: 'rgba(255,255,255,0.2)', 
+                color: '#FFFFFF', 
                 fontWeight: 600, 
                 fontSize: isDesktop ? 20 : 18, 
-                border: '2px solid #D17C6B', 
+                border: '2px solid #FFFFFF', 
                 borderRadius: 12, 
                 padding: isDesktop ? '14px 32px' : '12px 0', 
                 width: isDesktop ? 'auto' : '100%', 
                 textDecoration: 'none', 
-                boxShadow: '0 4px 12px rgba(156,116,98,0.1)', 
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
                 letterSpacing: 0.2,
+                textShadow: '0 1px 4px rgba(44,44,44,0.10)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 8px 16px rgba(156,116,98,0.15)';
+                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.25)';
               }}
               onMouseOut={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(156,116,98,0.1)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
               }}
             >
               Über mich
             </a>
-          </div>
-
-          <div 
-            className="scroll-indicator" 
-            style={{ 
-              position: 'absolute', 
-              bottom: 40, 
-              left: '50%', 
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              animation: 'bounce 2s infinite',
-              cursor: 'pointer'
-            }}
-            onClick={handleNavScroll('ueber-mich')}
-          >
-            <p style={{ fontSize: 14, marginBottom: 8, color: '#3B3737' }}>Scroll</p>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B3737" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 5v14"></path>
-              <path d="M18 13l-6 6-6-6"></path>
-            </svg>
           </div>
         </div>
       </section>
@@ -357,65 +371,29 @@ const LandingPage: React.FC = () => {
             textAlign: 'center'
           }}>Gründerin & Begleiterin: <span style={{ color: 'var(--terracotta)' }}>Chantal Röth</span></h2>
           
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: isDesktop ? 'row' : 'column', 
-            alignItems: 'center', 
-            gap: isDesktop ? 60 : 32 
-          }}>
-            <img
-              src="/headerpicture.jpg"
-              alt="Portrait von Chantal Röth, freundlicher Blick, rote Haare, weißer Pullover"
-              style={{ 
-                width: isDesktop ? 360 : 320, 
-                height: isDesktop ? 440 : 400, 
-                objectFit: 'cover', 
-                borderRadius: 24, 
-                boxShadow: '0 8px 24px rgba(156,116,98,0.2)',
-                transform: isDesktop ? 'rotate(-2deg)' : 'none'
-              }}
-              loading="lazy"
-            />
-            <div>
-              <p style={{ 
-                fontSize: isDesktop ? 18 : 16, 
-                lineHeight: isDesktop ? 1.7 : 1.5, 
-                color: 'var(--text-color)',
-                marginBottom: 16
-              }}>
-                Ich bin Chantal – ehrlich, direkt und gleichzeitig ein sicherer Raum.
-              </p>
-              <p style={{ 
-                fontSize: isDesktop ? 18 : 16, 
-                lineHeight: isDesktop ? 1.7 : 1.5, 
-                color: 'var(--text-color)',
-                marginBottom: 16
-              }}>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
+            <div className="w-full md:w-1/2 flex justify-center">
+              <img
+                src="/headerpicture.jpg"
+                alt="Portrait von Chantal Röth, freundlicher Blick, rote Haare, weißer Pullover"
+                className="rounded-3xl w-full max-w-md object-cover"
+                style={{
+                  aspectRatio: '1/1',
+                }}
+              />
+            </div>
+            <div className="w-full md:w-1/2 space-y-6">
+              <h2 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, color: '#3B3737' }}>Ich bin Chantal – ehrlich, direkt und gleichzeitig ein sicherer Raum.</h2>
+              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
                 Früher habe ich mich selbst klein gemacht, oft angepasst und gelächelt, obwohl ich innerlich zerrüttet war. Heute stehe ich da, wo ich andere begleiten möchte: in meiner Wahrheit.
               </p>
-              <p style={{ 
-                fontSize: isDesktop ? 18 : 16, 
-                lineHeight: isDesktop ? 1.7 : 1.5, 
-                color: 'var(--text-color)',
-                marginBottom: 16
-              }}>
+              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
                 Ich habe jahrelang als Pflegekraft gearbeitet – mitten im System, mitten im Schmerz anderer. Und irgendwann gemerkt: Ich habe mich selbst vergessen.
               </p>
-              <p style={{ 
-                fontSize: isDesktop ? 18 : 16, 
-                lineHeight: isDesktop ? 1.7 : 1.5, 
-                color: 'var(--text-color)',
-                marginBottom: 16
-              }}>
+              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
                 Heute begleite ich Menschen, die sich wieder spüren wollen. Die sich nicht länger anpassen wollen, sondern echt leben.
               </p>
-              <p style={{ 
-                fontSize: isDesktop ? 18 : 16, 
-                lineHeight: isDesktop ? 1.7 : 1.5, 
-                color: 'var(--text-color)',
-                marginBottom: 16,
-                fontWeight: 500
-              }}>
+              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
                 Was mich besonders macht? Ich spiele keine Rolle mehr. Ich zeige mich, wie ich bin – mit Herz, mit Klartext und mit dem festen Glauben, dass Veränderung möglich ist, wenn du sie willst.
               </p>
             </div>
@@ -433,66 +411,25 @@ const LandingPage: React.FC = () => {
             flexWrap: 'wrap',
             marginBottom: 24
           }}>
-            <img 
-              src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg" 
-              alt="Abstraktes Werk 1" 
-              style={{ 
-                width: isDesktop ? 340 : '80%', 
-                borderRadius: 18, 
-                height: isDesktop ? 300 : 250, 
-                objectFit: 'cover', 
-                boxShadow: '0 4px 24px rgba(156,116,98,0.13)',
-                transition: 'transform 0.3s ease'
-              }} 
-              loading="lazy"
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'scale(1.03)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
+            <ImageCard
+              src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg"
+              alt="Abstraktes Werk 1"
+              style={{ width: isDesktop ? '340px' : '300px', height: isDesktop ? '300px' : '250px' }}
             />
-            <img 
-              src="/IMG_0717.jpg" 
-              alt="Frau mit Schmetterlingen" 
-              style={{ 
-                width: isDesktop ? 340 : '80%', 
-                borderRadius: 18, 
-                height: isDesktop ? 300 : 250, 
-                objectFit: 'cover', 
-                boxShadow: '0 4px 24px rgba(156,116,98,0.13)',
-                transition: 'transform 0.3s ease' 
-              }} 
-              loading="lazy"
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'scale(1.03)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
+            <ImageCard
+              src="/IMG_0717.jpg"
+              alt="Frau mit Schmetterlingen"
+              style={{ width: isDesktop ? '340px' : '300px', height: isDesktop ? '300px' : '250px' }}
             />
-            <img 
-              src="/IMG_5214.jpg" 
-              alt="Porträt Collage" 
-              style={{ 
-                width: isDesktop ? 340 : '80%', 
-                borderRadius: 18, 
-                height: isDesktop ? 300 : 250, 
-                objectFit: 'cover', 
-                boxShadow: '0 4px 24px rgba(156,116,98,0.13)',
-                transition: 'transform 0.3s ease' 
-              }} 
-              loading="lazy"
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'scale(1.03)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
+            <ImageCard
+              src="/IMG_5214.jpg"
+              alt="Porträt Collage"
+              style={{ width: isDesktop ? '340px' : '300px', height: isDesktop ? '300px' : '250px' }}
             />
           </div>
         </div>
       </section>
+
 
       {/* Positive Mind Mentoring Section */}
       <section 
@@ -516,7 +453,7 @@ const LandingPage: React.FC = () => {
           
           <p style={{ 
             fontSize: isDesktop ? 20 : 18, 
-            color: 'var(--text-color)', 
+            color: '#3B3737', 
             marginBottom: 40,
             lineHeight: 1.6,
             textAlign: 'center',
@@ -531,7 +468,7 @@ const LandingPage: React.FC = () => {
             display: 'flex',
             flexDirection: isDesktop ? 'row' : 'column',
             gap: 40,
-            alignItems: 'flex-start',
+            alignItems: 'stretch',
             justifyContent: 'center',
             marginBottom: 48
           }}>
@@ -540,14 +477,16 @@ const LandingPage: React.FC = () => {
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               borderRadius: 16,
               padding: 24,
-              boxShadow: '0 8px 24px rgba(156,116,98,0.1)'
+              boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
+              minHeight: '100%'
             }}>
               <h3 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, color: '#D17C6B' }}>Was dich erwartet</h3>
               <ul style={{ 
                 paddingLeft: 20, 
                 fontSize: isDesktop ? 18 : 16, 
-                color: 'var(--text-color)',
+                color: '#3B3737',
                 lineHeight: 1.7,
+                height: '100%'
               }}>
                 <li style={{ marginBottom: 12 }}>•⁠  ⁠Tägliche Impulse – ehrlich, motivierend, individuell (als Sprachnachricht oder Text)</li>
                 <li style={{ marginBottom: 12 }}>•⁠  ⁠4 persönliche 1:1 Calls – mit Raum für alles, was dich bewegt</li>
@@ -563,14 +502,16 @@ const LandingPage: React.FC = () => {
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               borderRadius: 16,
               padding: 24,
-              boxShadow: '0 8px 24px rgba(156,116,98,0.1)'
+              boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
+              minHeight: '100%'
             }}>
               <h3 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, color: '#D17C6B' }}>Das wirst du erleben</h3>
               <ul style={{ 
                 paddingLeft: 20, 
                 fontSize: isDesktop ? 18 : 16, 
-                color: 'var(--text-color)',
+                color: '#3B3737',
                 lineHeight: 1.7,
+                height: '100%'
               }}>
                 <li style={{ marginBottom: 12 }}>• Mehr Verbindung zu dir selbst und deinen wahren Bedürfnissen</li>
                 <li style={{ marginBottom: 12 }}>• Ein gestärktes Selbstbewusstsein und Selbstwertgefühl</li>
@@ -601,30 +542,119 @@ const LandingPage: React.FC = () => {
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 12px 28px rgba(156,116,98,0.25)';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.25)';
               }}
               onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = '#D17C6B';
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 8px 20px rgba(156,116,98,0.2)';
               }}
             >
-              Starte jetzt deine Reise
+              Jetzt unverbindlich anfragen
             </a>
           </div>
         </div>
       </section>
 
-      {/* Course Section (Produkte) */}
+      {/* Testimonials Section */}
+      <section id="testimonials" data-aos="fade-up"
+        style={{
+          background: isDarkMode ? '#232326' : 'linear-gradient(135deg, #d98c7a 0%, #eeb18c 100%)',
+          padding: isDesktop ? '80px 0' : '48px 0',
+          minHeight: 400,
+          position: 'relative',
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: isDesktop ? 24 : '0 8px', textAlign: 'center' }}>
+          <h2 style={{ fontSize: isDesktop ? 44 : 28, fontWeight: 700, marginBottom: isDesktop ? 48 : 28, color: isDarkMode ? '#F8F5F2' : '#fff', letterSpacing: '-1px' }}>
+            Kundenfeedback
+          </h2>
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={30}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 7000, disableOnInteraction: false }}
+            loop={true}
+            style={{ paddingBottom: 40, maxWidth: 800, margin: '0 auto' }}
+          >
+            {testimonials.map((testimonial, index) => (
+              <SwiperSlide key={index}>
+                <div style={{
+                  background: isDarkMode ? '#18181b' : '#fff',
+                  color: isDarkMode ? '#F8F5F2' : '#232326',
+                  padding: isDesktop ? '56px 56px 40px 56px' : '32px 12px 28px 12px',
+                  borderRadius: 24,
+                  boxShadow: isDarkMode ? '0 8px 40px rgba(0,0,0,0.18)' : '0 8px 40px rgba(156,116,98,0.18)',
+                  minHeight: isDesktop ? 260 : 180,
+                  maxWidth: 700,
+                  margin: '0 auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  position: 'relative',
+                }}>
+                  <p style={{ fontSize: isDesktop ? 22 : 17, fontStyle: 'italic', marginBottom: 28, color: isDarkMode ? '#F8F5F2' : '#232326', lineHeight: 1.6, textAlign: 'center', maxWidth: 600 }}>
+                    {testimonial.quote}
+                  </p>
+                  <div style={{ width: '100%', textAlign: 'center' }}>
+                    <span style={{ fontWeight: 700, color: '#D17C6B', fontSize: isDesktop ? 20 : 16 }}>
+                      – {testimonial.author}
+                    </span>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        {/* Custom Swiper Styles */}
+        <style>{`
+          .swiper-button-next, .swiper-button-prev {
+            color: #fff;
+            top: 50%;
+            width: 48px;
+            height: 48px;
+            margin-top: -24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            box-shadow: 0 2px 8px rgba(156,116,98,0.10);
+            transition: background 0.2s, color 0.2s;
+          }
+          .swiper-button-next:hover, .swiper-button-prev:hover {
+            background: #D17C6B;
+            color: #fff;
+          }
+          .swiper-pagination-bullets {
+            bottom: 0 !important;
+          }
+          .swiper-pagination-bullet {
+            background: #fff;
+            opacity: 0.7;
+            width: 12px;
+            height: 12px;
+            margin: 0 4px !important;
+            transition: background 0.2s, opacity 0.2s;
+          }
+          .swiper-pagination-bullet-active {
+            background: #D17C6B;
+            opacity: 1;
+          }
+        `}</style>
+      </section>
+
+      {/* Course Section (Weitere Produkte) */}
       <section 
         id="course" 
         data-aos="fade-up" 
         style={{ 
           background: '#fff',
-          padding: '80px 0',
+          padding: isDesktop ? '80px 0' : '48px 0',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
+        className="dark:bg-[#232326]"
       >
         <div 
           className="section-decorative-element"
@@ -636,74 +666,101 @@ const LandingPage: React.FC = () => {
             height: '5px',
             background: 'var(--gradient-terra)'
           }}
-        ></div>
+        />
         
-        <div style={{ maxWidth: isDesktop ? 1000 : 700, margin: '0 auto', padding: 24 }}>
+        <div style={{ maxWidth: isDesktop ? 1000 : '98%', margin: '0 auto', padding: isDesktop ? 24 : '0 8px' }}>
           <h2 style={{ 
-            fontSize: isDesktop ? 36 : 28, 
+            fontSize: isDesktop ? 36 : 24, 
             fontWeight: 700, 
-            marginBottom: 40, 
+            marginBottom: isDesktop ? 40 : 24, 
             color: '#3B3737', 
             textAlign: 'center' 
-          }}>Weitere <span style={{ color: 'var(--terracotta)' }}>Produkte</span></h2>
+          }}
+          className="dark:text-white"
+          >Weitere <span style={{ color: 'var(--terracotta)' }}>Produkte</span></h2>
           
           <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: isDesktop ? '1fr' : '1fr',
-            gap: 32,
-            margin: '40px auto',
-            maxWidth: '500px'
+            display: 'flex',
+            justifyContent: 'center',
+            margin: isDesktop ? '40px auto' : '24px auto',
+            flexDirection: isDesktop ? 'row' : 'column',
+            alignItems: 'center',
+            gap: isDesktop ? 0 : 16
           }}>
-            {/* Produkt 1 */}
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.8)',
-              borderRadius: 16,
-              padding: 24,
-              boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-8px)';
-              e.currentTarget.style.boxShadow = '0 12px 30px rgba(156,116,98,0.15)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.1)';
-            }}>
+            {/* Nur SELFLOVE Journal */}
+            <div 
+              style={{ 
+                background: isDarkMode ? 'rgba(35,35,38,0.95)' : 'rgba(255, 255, 255, 0.8)',
+                borderRadius: 16,
+                padding: isDesktop ? 24 : 16,
+                boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
+                textAlign: 'center' as const,
+                display: 'flex' as const,
+                flexDirection: 'column' as const,
+                alignItems: 'center' as const,
+                maxWidth: isDesktop ? 400 : '100%',
+                width: '100%',
+                minWidth: 0,
+                cursor: 'pointer'
+              }}
+              className="dark:bg-[#232326] dark:backdrop-blur-md group"
+              tabIndex={0}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 12px 30px rgba(156,116,98,0.15)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.1)';
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px) scale(1.01)';
+                e.currentTarget.style.boxShadow = '0 10px 24px rgba(156,116,98,0.13)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.1)';
+              }}
+            >
               <img 
                 src="/o_1iqqn5jphig91jntdk4b131h8cr.webp" 
-                alt="SELFLOVE - Journal Cover" 
+                alt="Cover des SELFLOVE Journals: Aquarellbild mit Herz und sanften Farben" 
                 style={{ 
-                  width: 220, 
+                  width: isDesktop ? 220 : '100%', 
+                  maxWidth: 300,
                   borderRadius: 12, 
                   boxShadow: '0 4px 12px rgba(0,0,0,0.10)', 
                   marginBottom: 20 
                 }} 
                 loading="lazy" 
               />
-              <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>SELFLOVE – Journal</h3>
-              <p style={{ fontSize: 20, color: '#D17C6B', fontWeight: 600, marginBottom: 12 }}>13,23 €</p>
-              <p style={{ fontSize: 16, color: '#888', marginBottom: 16 }}>PDF zum Sofort-Download</p>
-              <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>
+              <h3 style={{ fontSize: isDesktop ? 22 : 18, fontWeight: 700, marginBottom: 8, color: '#3B3737' }} className="dark:text-white">SELFLOVE – Journal</h3>
+              <p style={{ fontSize: isDesktop ? 20 : 17, color: '#D17C6B', fontWeight: 600, marginBottom: 12 }} className="dark:text-[#F1B6A6]">13,23 €</p>
+              <p style={{ fontSize: 16, color: '#888', marginBottom: 16 }} className="dark:text-gray-400">PDF zum Sofort-Download</p>
+              <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 20, color: '#3B3737' }} className="dark:text-white">
                 Entdecke mit diesem liebevoll gestalteten Selbstliebe-Journal einen sicheren Raum, um dich selbst besser kennenzulernen.
               </p>
               <a 
                 href="https://payhip.com/b/CpoJr" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                style={{ 
-                  display: 'inline-block',
-                  background: '#D17C6B',
-                  color: '#fff',
-                  padding: '10px 20px',
-                  borderRadius: 8,
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  marginTop: 'auto'
+                style={productButtonStyle(isDesktop)}
+                className="dark:bg-[#F1B6A6] dark:text-[#232326] focus:outline-none focus:ring-2 focus:ring-[#D17C6B] hover:bg-[#b86a5c] dark:hover:bg-[#e6a08a] hover:underline"
+                role="button"
+                aria-label="SELFLOVE Journal jetzt ansehen und kaufen (externer Link)"
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    window.open('https://payhip.com/b/CpoJr', '_blank');
+                  }
+                }}
+                onMouseDown={e => {
+                  e.currentTarget.style.transform = 'scale(0.97)';
+                }}
+                onMouseUp={e => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+                onBlur={e => {
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
                 Jetzt ansehen & kaufen
@@ -713,346 +770,158 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section 
-        data-aos="fade-up" 
-        style={{ 
-          background: 'var(--gradient-rose)', 
-          padding: '80px 0',
-          position: 'relative',
-          overflow: 'hidden'
-        }}
-      >
-        <div style={{ maxWidth: isDesktop ? 1000 : 700, margin: '0 auto', padding: 24, textAlign: 'center' }}>
-          <h2 style={{ 
-            fontSize: isDesktop ? 36 : 28, 
-            fontWeight: 700, 
-            marginBottom: 48, 
-            color: '#fff',
-            textAlign: 'center'
-          }}>Kundenfeedback</h2>
-
-          <Swiper
-            modules={[Navigation, Pagination, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            navigation={isDesktop}
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            style={{ padding: '20px 10px 50px' }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <SwiperSlide key={index}>
-                <div style={{ 
-                  background: '#fff', 
-                  borderRadius: 16, 
-                  boxShadow: '0 8px 30px rgba(156,116,98,0.15)', 
-                  padding: isDesktop ? 40 : 30, 
-                  margin: '0 auto', 
-                  maxWidth: isDesktop ? 700 : '100%',
-                  minHeight: 220,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center'
-                }}>
-                  <svg 
-                    width="40" 
-                    height="40" 
-                    viewBox="0 0 24 24" 
-                    fill="#D17C6B" 
-                    style={{ marginBottom: 16, opacity: 0.5 }}
-                  >
-                    <path d="M11.3,5.2C8.5,5.8,6.4,7.7,6.4,11.5v7.4h7.9v-7.4h-4c0-1.8,1.2-3.3,4-3.9L11.3,5.2z M21.3,5.2c-2.8,0.6-4.9,2.5-4.9,6.3v7.4h7.9v-7.4h-4c0-1.8,1.2-3.3,4-3.9L21.3,5.2z"/>
-                  </svg>
-                  <p style={{ 
-                    fontSize: isDesktop ? 22 : 20, 
-                    fontStyle: 'italic', 
-                    marginBottom: 24,
-                    lineHeight: 1.5,
-                    color: '#333'
-                  }}>
-                    {testimonial.quote}
-                  </p>
-                  <div style={{ fontWeight: 600, color: '#D17C6B' }}>– {testimonial.author}</div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
-
-      {/* Social Media Section */}
-      <section 
-        data-aos="fade-up" 
-        style={{ 
-          background: '#fff',
-          padding: '60px 0',
-          textAlign: 'center'
-        }}
-      >
-        <div style={{ maxWidth: isDesktop ? 1000 : 700, margin: '0 auto', padding: 24 }}>
-          <h2 style={{ fontSize: isDesktop ? 36 : 28, fontWeight: 700, marginBottom: 32, color: '#3B3737' }}>Folge mir auf Social Media</h2>
-          
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: isDesktop ? 60 : 40, 
-            alignItems: 'center', 
-            margin: '40px 0'
-          }}>
-            <a 
-              href="http://open.spotify.com/show/5aXhid2UTtgioftEV7ESPa" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              aria-label="Spotify" 
-              style={{ 
-                color: '#3B3737',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                padding: '16px',
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.4)',
-                boxShadow: '0 4px 12px rgba(156,116,98,0.1)'
+      {/* Kontakt Section */}
+      <section id="kontakt" data-aos="fade-up">
+        <div style={{
+          maxWidth: 1100,
+          margin: '0 auto',
+          padding: 24,
+          display: 'flex',
+          flexDirection: isDesktop ? 'row' : 'column',
+          gap: isDesktop ? 48 : 32,
+          alignItems: 'flex-start',
+          background: isDarkMode ? '#18181b' : 'rgba(255,255,255,0.85)',
+          borderRadius: 24,
+          boxShadow: '0 8px 32px rgba(156,116,98,0.10)'
+        }}>
+          {/* Linke Seite: Text & Bild */}
+          <div style={{ flex: 1, minWidth: 320, background: isDarkMode ? '#232326' : 'rgba(255,255,255,0.85)', color: isDarkMode ? '#F8F5F2' : '#3B3737', borderRadius: 18, padding: isDesktop ? 40 : 24, marginRight: isDesktop ? 24 : 0 }}>
+            <h2 style={{ fontSize: isDesktop ? 40 : 28, fontWeight: 700, marginBottom: 16, color: isDarkMode ? '#F8F5F2' : '#3B3737', letterSpacing: '-1px' }}>
+              Kontakt<span style={{ color: '#D17C6B' }}>.</span>
+            </h2>
+            <p style={{ fontSize: 20, color: isDarkMode ? '#F8F5F2' : '#3B3737', marginBottom: 32, lineHeight: 1.6 }}>
+              Du hast Fragen zum Open Mind Circle oder zum Kurs? Brauchst Unterstützung oder möchtest kooperieren? Fülle das Formular aus und ich melde mich schnellstmöglich bei dir.
+            </p>
+            <img
+              src="/assets/designs/auge.png"
+              alt="Auge gemalt, Träne, Kunst"
+              style={{
+                width: '100%',
+                maxWidth: 420,
+                borderRadius: 18,
+                boxShadow: '0 4px 18px rgba(156,116,98,0.13)',
+                marginBottom: 8
               }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(156,116,98,0.15)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(156,116,98,0.1)';
-              }}
-            >
-              <SpotifyIcon style={{ width: isDesktop ? 60 : 40, height: isDesktop ? 60 : 40 }} />
-            </a>
-            <a 
-              href="https://www.instagram.com/chantiheulleise/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              aria-label="Instagram" 
-              style={{ 
-                color: '#3B3737',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                padding: '16px',
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.4)',
-                boxShadow: '0 4px 12px rgba(156,116,98,0.1)'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(156,116,98,0.15)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(156,116,98,0.1)';
-              }}
-            >
-              <Instagram size={isDesktop ? 60 : 40} />
-            </a>
-            <a 
-              href="https://linktr.ee/chantiheulleise" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              aria-label="Linktree" 
-              style={{ 
-                color: '#3B3737',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                padding: '16px',
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.4)',
-                boxShadow: '0 4px 12px rgba(156,116,98,0.1)'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(156,116,98,0.15)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(156,116,98,0.1)';
-              }}
-            >
-              <LinktreeIcon style={{ width: isDesktop ? 60 : 40, height: isDesktop ? 60 : 40 }} />
-            </a>
+            />
           </div>
-          
-          <p style={{ fontSize: isDesktop ? 18 : 16, marginTop: 24, maxWidth: 600, margin: '24px auto' }}>
-            Folge mir auf Social Media für tägliche Inspiration, kostenlose Inhalte und Updates zu meinen Angeboten.
-          </p>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section 
-        id="contact" 
-        data-aos="fade-up" 
-        style={{ 
-          background: 'var(--gradient-light)',
-          padding: '80px 0',
-          position: 'relative',
-          overflow: 'hidden',
-          borderTop: '1px solid rgba(217, 186, 127, 0.3)'
-        }}
-      >
-        <div style={{ maxWidth: isDesktop ? 1000 : 700, margin: '0 auto', padding: 24 }}>
-          <div style={{ 
-            display: 'flex',
-            flexDirection: isDesktop ? 'row' : 'column',
-            gap: 48,
-            alignItems: isDesktop ? 'center' : 'stretch'
-          }}>
-            <div style={{ flex: 1 }}>
-              <h2 style={{ 
-                fontSize: isDesktop ? 36 : 28, 
-                fontWeight: 700, 
-                marginBottom: 16, 
-                color: '#3B3737'
-              }}>Kontakt<span style={{ color: 'var(--terracotta)' }}>.</span></h2>
-              
-              <p style={{ 
-                fontSize: isDesktop ? 18 : 16, 
-                color: 'var(--text-color)', 
-                marginBottom: 24,
-                lineHeight: isDesktop ? 1.6 : 1.5
-              }}>
-                Du hast Fragen zum Open Mind Circle oder zum Kurs? Brauchst Unterstützung oder möchtest kooperieren? Fülle das Formular aus und ich melde mich schnellstmöglich bei dir.
-              </p>
-              
-              <img
-                src="/IMG_6396.jpg"
-                alt="Kontakt und Kommunikation"
-                style={{ 
-                  width: '100%', 
-                  borderRadius: 16, 
-                  marginBottom: 24, 
-                  maxHeight: 300, 
-                  objectFit: 'cover',
-                  boxShadow: '0 8px 24px rgba(156,116,98,0.15)'
+          {/* Rechte Seite: Formular */}
+          <div style={{ flex: 1, minWidth: 320, background: isDarkMode ? '#232326' : '#fff', borderRadius: 18, boxShadow: '0 2px 12px rgba(156,116,98,0.07)', padding: isDesktop ? 40 : 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <form action="https://formspree.io/f/mrgnewza" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div>
+                <label htmlFor="name" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#555' }}>Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  style={{
+                    width: '100%',
+                    padding: 12,
+                    fontSize: 16,
+                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#ccc'}`,
+                    borderRadius: 8,
+                    background: isDarkMode ? '#18181b' : '#fff',
+                    color: isDarkMode ? '#F8F5F2' : '#232326',
+                    transition: 'border-color 0.3s, box-shadow 0.3s'
+                  }}
+                  onFocus={e => {
+                    e.currentTarget.style.borderColor = '#D17C6B';
+                    e.currentTarget.style.boxShadow = '0 0 8px rgba(209,124,107,0.3)';
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#ccc';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                />
+              </div>
+              <div>
+                <label htmlFor="email" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#555' }}>E-Mail</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  style={{
+                    width: '100%',
+                    padding: 12,
+                    fontSize: 16,
+                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#ccc'}`,
+                    borderRadius: 8,
+                    background: isDarkMode ? '#18181b' : '#fff',
+                    color: isDarkMode ? '#F8F5F2' : '#232326',
+                    transition: 'border-color 0.3s, box-shadow 0.3s'
+                  }}
+                  onFocus={e => {
+                    e.currentTarget.style.borderColor = '#D17C6B';
+                    e.currentTarget.style.boxShadow = '0 0 8px rgba(209,124,107,0.3)';
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#ccc';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                />
+              </div>
+              <div>
+                <label htmlFor="message" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#555' }}>Nachricht</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={6}
+                  style={{
+                    width: '100%',
+                    padding: 12,
+                    fontSize: 16,
+                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#ccc'}`,
+                    borderRadius: 8,
+                    background: isDarkMode ? '#18181b' : '#fff',
+                    color: isDarkMode ? '#F8F5F2' : '#232326',
+                    resize: 'vertical',
+                    transition: 'border-color 0.3s, box-shadow 0.3s'
+                  }}
+                  onFocus={e => {
+                    e.currentTarget.style.borderColor = '#D17C6B';
+                    e.currentTarget.style.boxShadow = '0 0 8px rgba(209,124,107,0.3)';
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#ccc';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                style={{
+                  background: '#D17C6B',
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: 18,
+                  border: 'none',
+                  borderRadius: 8,
+                  padding: '14px 24px',
+                  cursor: 'pointer',
+                  marginTop: 8,
+                  transition: 'background-color 0.3s, transform 0.3s, box-shadow 0.3s'
                 }}
-                loading="lazy"
-              />
-            </div>
-            
-            <div style={{ 
-              flex: 1,
-              background: 'rgba(255, 255, 255, 0.7)',
-              borderRadius: 16,
-              padding: 32,
-              boxShadow: '0 8px 24px rgba(156,116,98,0.1)'
-            }}>
-              <form role="form" aria-label="Kontaktformular">
-                <div style={{ marginBottom: 20 }}>
-                  <label htmlFor="name" style={{ fontSize: 16, fontWeight: 500, marginBottom: 6, display: 'block' }}>Name</label>
-                  <input 
-                    id="name" 
-                    name="name" 
-                    type="text" 
-                    style={{ 
-                      width: '100%', 
-                      padding: 12, 
-                      fontSize: 16, 
-                      border: '1px solid #ddd',
-                      borderRadius: 8,
-                      transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
-                    }} 
-                    aria-label="Name"
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = '#D17C6B';
-                      e.currentTarget.style.boxShadow = '0 0 0 2px rgba(209, 124, 107, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = '#ddd';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  />
-                </div>
-                
-                <div style={{ marginBottom: 20 }}>
-                  <label htmlFor="email" style={{ fontSize: 16, fontWeight: 500, marginBottom: 6, display: 'block' }}>E-Mail</label>
-                  <input 
-                    id="email" 
-                    name="email" 
-                    type="email" 
-                    style={{ 
-                      width: '100%', 
-                      padding: 12, 
-                      fontSize: 16, 
-                      border: '1px solid #ddd',
-                      borderRadius: 8,
-                      transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
-                    }} 
-                    aria-label="E-Mail"
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = '#D17C6B';
-                      e.currentTarget.style.boxShadow = '0 0 0 2px rgba(209, 124, 107, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = '#ddd';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  />
-                </div>
-                
-                <div style={{ marginBottom: 20 }}>
-                  <label htmlFor="message" style={{ fontSize: 16, fontWeight: 500, marginBottom: 6, display: 'block' }}>Nachricht</label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    rows={5} 
-                    style={{ 
-                      width: '100%', 
-                      padding: 12, 
-                      fontSize: 16, 
-                      border: '1px solid #ddd',
-                      borderRadius: 8,
-                      transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-                      resize: 'vertical'
-                    }} 
-                    aria-label="Nachricht"
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = '#D17C6B';
-                      e.currentTarget.style.boxShadow = '0 0 0 2px rgba(209, 124, 107, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = '#ddd';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  />
-                </div>
-                
-                <div style={{ textAlign: 'center', marginTop: 32 }}>
-                  <button 
-                    type="submit" 
-                    style={{ 
-                      padding: '14px 32px', 
-                      background: '#D17C6B', 
-                      color: '#fff', 
-                      border: 'none', 
-                      borderRadius: 8,
-                      fontSize: 16,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                      boxShadow: '0 4px 12px rgba(156,116,98,0.1)'
-                    }} 
-                    aria-label="Nachricht senden"
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-3px)';
-                      e.currentTarget.style.boxShadow = '0 8px 16px rgba(156,116,98,0.15)';
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(156,116,98,0.1)';
-                    }}
-                  >
-                    Nachricht senden
-                  </button>
-                </div>
-              </form>
-            </div>
+                onMouseOver={e => {
+                  e.currentTarget.style.backgroundColor = '#b86a5c';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 4px 10px rgba(209,124,107,0.4)';
+                }}
+                onMouseOut={e => {
+                  e.currentTarget.style.backgroundColor = '#D17C6B';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(156,116,98,0.2)';
+                }}
+              >
+                Nachricht senden
+              </button>
+            </form>
           </div>
         </div>
       </section>
 
-      {/* Custom CSS for animations */}
+      {/* Custom Styles */}
       <style dangerouslySetInnerHTML={{
         __html: `
           @keyframes subtle-zoom {
@@ -1060,10 +929,10 @@ const LandingPage: React.FC = () => {
               transform: scale(1);
             }
             100% {
-              transform: scale(1.05);
+              transform: scale(1.03);
             }
           }
-          
+
           @keyframes fade-in {
             0% {
               opacity: 0;
@@ -1074,16 +943,104 @@ const LandingPage: React.FC = () => {
               transform: translateY(0);
             }
           }
-          
-          @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-              transform: translateY(0) translateX(-50%);
+
+          .hero-section {
+            position: relative;
+            height: 100vh; /* Adjust as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+          }
+
+          .hero-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Adjust overlay color and opacity */
+            z-index: 1;
+          }
+
+          .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 16px;
+          }
+
+          .hero-heading {
+            font-size: 72px; /* Adjust as needed */
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            color: #FFFFFF;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            animation: fade-in 1s ease-out;
+          }
+
+          .hero-subtitle {
+            font-size: 26px; /* Adjust as needed */
+            font-weight: 400;
+            margin-bottom: 32px;
+            color: #FFFFFF;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            line-height: 1.5;
+            max-width: 700px;
+            margin: 0 auto 40px;
+          }
+
+          .desktop-social-icons {
+            position: fixed;
+            top: 120px; /* Adjust as needed */
+            left: 24px; /* Adjust as needed */
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            background: rgba(244, 239, 233, 0.6); /* Adjust background */
+            padding: 16px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+          }
+
+          .desktop-social-icons a {
+            color: #3B3737; /* Adjust icon color */
+            transition: transform 0.2s ease;
+          }
+
+          .desktop-social-icons a:hover {
+            transform: scale(1.4);
+          }
+
+          @media (max-width: 1023px) {
+            .hero-heading {
+              font-size: 44px; /* Adjust for mobile */
             }
-            40% {
-              transform: translateY(-10px) translateX(-50%);
+            .hero-subtitle {
+              font-size: 20px; /* Adjust for mobile */
             }
-            60% {
-              transform: translateY(-5px) translateX(-50%);
+            .desktop-social-icons {
+              display: none; /* Hide on mobile */
             }
           }
         `

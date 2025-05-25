@@ -7,7 +7,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: '/', // Absolute Pfade für Webbereitstellung
+  base: './', // Relative Pfade für Webbereitstellung
   server: {
     port: 5176, // Unique port for this project
     allowedHosts: [

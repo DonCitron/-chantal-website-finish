@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
     { icon: <SpotifyIcon />, url: 'http://open.spotify.com/show/5aXhid2UTtgioftEV7ESPa', label: 'Spotify' },
     { icon: <Instagram size={18} />, url: 'https://instagram.com/chantiheulleise', label: 'Instagram' },
     { icon: <LinktreeIcon />, url: 'https://linktr.ee/chantiheulleise', label: 'Linktree' },
-    { icon: <Mail size={18} />, url: 'mailto:kontakt@openmindcircle.de', label: 'Email' },
+    { icon: <Mail size={18} />, url: 'mailto:chantalroeth2@web.de', label: 'Email' },
   ];
   
   const footerLinks = [
@@ -119,8 +119,8 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-charcoal-200">
                 <Mail size={16} />
-                <a href="mailto:kontakt@openmindcircle.de" className="text-sm hover:text-white transition-colors duration-300">
-                  kontakt@openmindcircle.de
+                <a href="mailto:chantalroeth2@web.de" className="text-sm hover:text-white transition-colors duration-300">
+                  chantalroeth2@web.de
                 </a>
               </li>
               <li className="flex items-center gap-2 text-charcoal-200">
