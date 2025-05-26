@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -20,9 +20,12 @@ const LinktreeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  isDarkMode: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
   const currentYear = new Date().getFullYear();
-  const location = useLocation();
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -49,7 +52,13 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="pt-16 pb-8" style={{ background: 'var(--gradient-terra)', color: '#fff' }}>
+    <footer className="pt-16 pb-8" style={{
+        background: isDarkMode 
+          ? '#232326' // Same dark background as other sections in dark mode
+          : 'var(--gradient-terra)', // Keep terracotta gradient for light mode
+        color: '#ffffff'
+      }}
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Brand */}
@@ -123,16 +132,12 @@ const Footer: React.FC = () => {
                   chantalroeth2@web.de
                 </a>
               </li>
-              <li className="flex items-center gap-2 text-charcoal-200">
-                <Phone size={16} />
-                <span className="text-sm">+49 123 456789</span>
-              </li>
               <li className="flex items-start gap-2 text-charcoal-200 mt-2">
                 <MapPin size={16} style={{ marginTop: 2 }} />
                 <span className="text-sm">
                   Open Mind Circle<br />
-                  Beispielstraße 123<br />
-                  12345 Beispielstadt
+                  Sennteich 16<br />
+                  68199 Mannheim
                 </span>
               </li>
             </ul>
