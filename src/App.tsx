@@ -3,7 +3,6 @@ import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion';
 
 // Pages
-import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
 import ContactPage from './pages/ContactPage';
@@ -19,7 +18,7 @@ import Layout from './components/layout/Layout';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isPremium, setIsPremium] = useState(false); // Mock premium state
+  const [isPremium] = useState(false); // Mock premium state
   
   // Check for user's preferred color scheme
   useEffect(() => {
@@ -62,7 +61,7 @@ function App() {
         <Layout isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
           <AnimatePresence mode="wait">
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<LandingPage isDarkMode={isDarkMode} />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/premium" element={<PremiumPage />} />
               <Route path="/products" element={<ProductPage />} />

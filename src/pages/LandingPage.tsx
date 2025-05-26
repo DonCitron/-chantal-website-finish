@@ -1,5 +1,4 @@
 import React, { useEffect, useState, CSSProperties } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { Instagram } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -11,15 +10,9 @@ import 'swiper/css/pagination';
 
 import ImageCard from '../components/ui/ImageCard'; // Import ImageCard component
 
-const sectionStyle = {
-  padding: '80px 0',
-  background: 'var(--section-bg, #fff)',
-};
-
-const sectionAltStyle = {
-  padding: '80px 0',
-  background: 'var(--section-bg-alt, #f7f7f7)',
-};
+interface LandingPageProps {
+  isDarkMode: boolean;
+}
 
 const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -45,23 +38,6 @@ interface Testimonial {
   image?: string;
 }
 
-// Wiederverwendbare Styles für Produktbox und Button
-const productBoxStyle = (isDesktop: boolean): CSSProperties => ({
-  background: 'rgba(255, 255, 255, 0.8)',
-  borderRadius: 16,
-  padding: isDesktop ? 24 : 16,
-  boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
-  transition: 'transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s cubic-bezier(.4,2,.6,1)',
-  textAlign: 'center' as const,
-  display: 'flex' as const,
-  flexDirection: 'column' as const,
-  alignItems: 'center' as const,
-  maxWidth: isDesktop ? 400 : '100%',
-  width: '100%',
-  minWidth: 0,
-  cursor: 'pointer'
-});
-
 const productButtonStyle = (isDesktop: boolean): CSSProperties => ({
   display: 'inline-block',
   background: '#D17C6B',
@@ -76,9 +52,7 @@ const productButtonStyle = (isDesktop: boolean): CSSProperties => ({
   transition: 'background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.1s',
 });
 
-const LandingPage: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   // Testimonials data
   const testimonials: Testimonial[] = [
@@ -124,17 +98,6 @@ const LandingPage: React.FC = () => {
   }, []);
 
   const isDesktop = windowWidth >= 1024;
-
-  // Darkmode-Status ermitteln
-  const [isDarkMode, setIsDarkMode] = useState(
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
 
   return (
     <div style={{ width: '100%', overflowX: 'hidden', paddingTop: 0 }} role="main">
@@ -235,7 +198,7 @@ const LandingPage: React.FC = () => {
             left: 0, 
             width: '100%', 
             height: '100%', 
-            background: 'rgba(35,35,38,0.65)', 
+            background: isDarkMode ? 'rgba(35,35,38,0.65)' : 'rgba(0,0,0,0.4)', 
             zIndex: 2 
           }} 
         />
@@ -560,7 +523,7 @@ const LandingPage: React.FC = () => {
       {/* Testimonials Section */}
       <section id="testimonials" data-aos="fade-up"
         style={{
-          background: isDarkMode ? '#232326' : 'linear-gradient(135deg, #d98c7a 0%, #eeb18c 100%)',
+          background: isDarkMode ? '#232326' : 'linear-gradient(135deg, #D17C6B 0%, #D9BA7F 100%)',
           padding: isDesktop ? '80px 0' : '48px 0',
           minHeight: 400,
           position: 'relative',
@@ -583,11 +546,11 @@ const LandingPage: React.FC = () => {
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index}>
                 <div style={{
-                  background: isDarkMode ? '#18181b' : '#fff',
-                  color: isDarkMode ? '#F8F5F2' : '#232326',
+                  background: isDarkMode ? '#18181b' : '#F4EFE9',
+                  color: isDarkMode ? '#F8F5F2' : '#2E2E2E',
                   padding: isDesktop ? '56px 56px 40px 56px' : '32px 12px 28px 12px',
                   borderRadius: 24,
-                  boxShadow: isDarkMode ? '0 8px 40px rgba(0,0,0,0.18)' : '0 8px 40px rgba(156,116,98,0.18)',
+                  boxShadow: isDarkMode ? '0 8px 40px rgba(156,116,98,0.18)' : '0 8px 40px rgba(0,0,0,0.18)',
                   minHeight: isDesktop ? 260 : 180,
                   maxWidth: 700,
                   margin: '0 auto',
@@ -596,7 +559,7 @@ const LandingPage: React.FC = () => {
                   alignItems: 'center',
                   position: 'relative',
                 }}>
-                  <p style={{ fontSize: isDesktop ? 22 : 17, fontStyle: 'italic', marginBottom: 28, color: isDarkMode ? '#F8F5F2' : '#232326', lineHeight: 1.6, textAlign: 'center', maxWidth: 600 }}>
+                  <p style={{ fontSize: isDesktop ? 22 : 17, fontStyle: 'italic', marginBottom: 28, color: isDarkMode ? '#F8F5F2' : '#2E2E2E', lineHeight: 1.6, textAlign: 'center', maxWidth: 600 }}>
                     {testimonial.quote}
                   </p>
                   <div style={{ width: '100%', textAlign: 'center' }}>
@@ -690,7 +653,7 @@ const LandingPage: React.FC = () => {
             {/* Nur SELFLOVE Journal */}
             <div 
               style={{ 
-                background: isDarkMode ? 'rgba(35,35,38,0.95)' : 'rgba(255, 255, 255, 0.8)',
+                background: isDarkMode ? 'rgba(35,35,38,0.95)' : '#F4EFE9',
                 borderRadius: 16,
                 padding: isDesktop ? 24 : 16,
                 boxShadow: '0 8px 24px rgba(156,116,98,0.1)',
@@ -703,7 +666,8 @@ const LandingPage: React.FC = () => {
                 minWidth: 0,
                 cursor: 'pointer'
               }}
-              className="dark:bg-[#232326] dark:backdrop-blur-md group"
+              className="group"
+              data-theme={isDarkMode ? "dark" : "light"}
               tabIndex={0}
               onMouseOver={(e) => {
                 e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
@@ -780,16 +744,16 @@ const LandingPage: React.FC = () => {
           flexDirection: isDesktop ? 'row' : 'column',
           gap: isDesktop ? 48 : 32,
           alignItems: 'flex-start',
-          background: isDarkMode ? '#18181b' : 'rgba(255,255,255,0.85)',
+          background: isDarkMode ? '#18181b' : 'linear-gradient(135deg, #D17C6B 0%, #E8A498 100%)',
           borderRadius: 24,
           boxShadow: '0 8px 32px rgba(156,116,98,0.10)'
         }}>
           {/* Linke Seite: Text & Bild */}
-          <div style={{ flex: 1, minWidth: 320, background: isDarkMode ? '#232326' : 'rgba(255,255,255,0.85)', color: isDarkMode ? '#F8F5F2' : '#3B3737', borderRadius: 18, padding: isDesktop ? 40 : 24, marginRight: isDesktop ? 24 : 0 }}>
-            <h2 style={{ fontSize: isDesktop ? 40 : 28, fontWeight: 700, marginBottom: 16, color: isDarkMode ? '#F8F5F2' : '#3B3737', letterSpacing: '-1px' }}>
+          <div style={{ flex: 1, minWidth: 320, background: isDarkMode ? '#232326' : 'linear-gradient(135deg, #D17C6B 0%, #E8A498 100%)', color: isDarkMode ? '#F8F5F2' : '#fff', borderRadius: 18, padding: isDesktop ? 40 : 24, marginRight: isDesktop ? 24 : 0 }}>
+            <h2 style={{ fontSize: isDesktop ? 40 : 28, fontWeight: 700, marginBottom: 16, color: isDarkMode ? '#F8F5F2' : '#fff', letterSpacing: '-1px' }}>
               Kontakt<span style={{ color: '#D17C6B' }}>.</span>
             </h2>
-            <p style={{ fontSize: 20, color: isDarkMode ? '#F8F5F2' : '#3B3737', marginBottom: 32, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 20, color: isDarkMode ? '#F8F5F2' : '#fff', marginBottom: 32, lineHeight: 1.6 }}>
               Du hast Fragen zum Open Mind Circle oder zum Kurs? Brauchst Unterstützung oder möchtest kooperieren? Fülle das Formular aus und ich melde mich schnellstmöglich bei dir.
             </p>
             <img
@@ -805,10 +769,10 @@ const LandingPage: React.FC = () => {
             />
           </div>
           {/* Rechte Seite: Formular */}
-          <div style={{ flex: 1, minWidth: 320, background: isDarkMode ? '#232326' : '#fff', borderRadius: 18, boxShadow: '0 2px 12px rgba(156,116,98,0.07)', padding: isDesktop ? 40 : 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ flex: 1, minWidth: 320, background: isDarkMode ? '#232326' : 'linear-gradient(135deg, #D17C6B 0%, #E8A498 100%)', borderRadius: 18, boxShadow: '0 2px 12px rgba(156,116,98,0.07)', padding: isDesktop ? 40 : 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
             <form action="https://formspree.io/f/mrgnewza" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div>
-                <label htmlFor="name" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#555' }}>Name</label>
+                <label htmlFor="name" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#fff' }}>Name</label>
                 <input
                   type="text"
                   id="name"
@@ -818,9 +782,9 @@ const LandingPage: React.FC = () => {
                     width: '100%',
                     padding: 12,
                     fontSize: 16,
-                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#ccc'}`,
+                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#D9BA7F'}`,
                     borderRadius: 8,
-                    background: isDarkMode ? '#18181b' : '#fff',
+                    background: isDarkMode ? '#18181b' : '#ffffff',
                     color: isDarkMode ? '#F8F5F2' : '#232326',
                     transition: 'border-color 0.3s, box-shadow 0.3s'
                   }}
@@ -829,13 +793,13 @@ const LandingPage: React.FC = () => {
                     e.currentTarget.style.boxShadow = '0 0 8px rgba(209,124,107,0.3)';
                   }}
                   onBlur={e => {
-                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#ccc';
+                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#D9BA7F';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 />
               </div>
               <div>
-                <label htmlFor="email" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#555' }}>E-Mail</label>
+                <label htmlFor="email" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#fff' }}>E-Mail</label>
                 <input
                   type="email"
                   id="email"
@@ -845,9 +809,9 @@ const LandingPage: React.FC = () => {
                     width: '100%',
                     padding: 12,
                     fontSize: 16,
-                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#ccc'}`,
+                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#D9BA7F'}`,
                     borderRadius: 8,
-                    background: isDarkMode ? '#18181b' : '#fff',
+                    background: isDarkMode ? '#18181b' : '#ffffff',
                     color: isDarkMode ? '#F8F5F2' : '#232326',
                     transition: 'border-color 0.3s, box-shadow 0.3s'
                   }}
@@ -856,13 +820,13 @@ const LandingPage: React.FC = () => {
                     e.currentTarget.style.boxShadow = '0 0 8px rgba(209,124,107,0.3)';
                   }}
                   onBlur={e => {
-                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#ccc';
+                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#D9BA7F';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 />
               </div>
               <div>
-                <label htmlFor="message" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#555' }}>Nachricht</label>
+                <label htmlFor="message" style={{ display: 'block', fontSize: 18, fontWeight: 500, marginBottom: 8, color: isDarkMode ? '#F8F5F2' : '#fff' }}>Nachricht</label>
                 <textarea
                   id="message"
                   name="message"
@@ -872,9 +836,9 @@ const LandingPage: React.FC = () => {
                     width: '100%',
                     padding: 12,
                     fontSize: 16,
-                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#ccc'}`,
+                    border: `1px solid ${isDarkMode ? '#D17C6B' : '#D9BA7F'}`,
                     borderRadius: 8,
-                    background: isDarkMode ? '#18181b' : '#fff',
+                    background: isDarkMode ? '#18181b' : '#ffffff',
                     color: isDarkMode ? '#F8F5F2' : '#232326',
                     resize: 'vertical',
                     transition: 'border-color 0.3s, box-shadow 0.3s'
@@ -884,7 +848,7 @@ const LandingPage: React.FC = () => {
                     e.currentTarget.style.boxShadow = '0 0 8px rgba(209,124,107,0.3)';
                   }}
                   onBlur={e => {
-                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#ccc';
+                    e.currentTarget.style.borderColor = isDarkMode ? '#D17C6B' : '#D9BA7F';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 ></textarea>

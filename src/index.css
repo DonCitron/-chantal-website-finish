@@ -58,39 +58,39 @@
   
   .nav-link {
     @apply relative px-2 py-1 font-sans text-sm uppercase transition-colors duration-300;
-    color: #3B3737 !important;
+    color: #F8F5F2 !important;
     font-weight: 600;
     letter-spacing: 0.12em;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   }
   
   .nav-link:hover {
-    color: #D17C6B !important;
-    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.3);
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
   }
   
   .nav-link.active {
-    color: #D17C6B !important;
+    color: #ffffff !important;
     border: none !important;
     background: none !important;
     box-shadow: none !important;
-    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.3);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
   }
   
-  /* Dark mode navigation colors */
+  /* Dark mode (light mode) navigation colors */
   .dark .nav-link {
-    color: #F8F5F2 !important;
+    color: #ffffff !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   }
   
   .dark .nav-link:hover {
-    color: #D17C6B !important;
-    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.5);
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
   }
   
   .dark .nav-link.active {
-    color: #D17C6B !important;
-    text-shadow: 0 1px 3px rgba(209, 124, 107, 0.5);
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
   }
   
   .image-gallery {
@@ -152,12 +152,12 @@
 
 /* Hero section in dark mode needs special handling */
 .hero-heading {
-  color: #F8F5F2 !important;
+  color: #FFFFFF !important;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
 }
 
 .hero-subtitle {
-  color: #F8F5F2 !important;
+  color: #FFFFFF !important;
   text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
 }
 .hero-overlay {
@@ -166,6 +166,35 @@
 
 .dark a {
   color: #F1B6A6 !important;
+}
+
+/* Header logo specific styling to override general dark mode link color */
+.dark header a[href="/"] {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* Product card light mode background */
+.product-card-light {
+  background-color: #F4EFE9 !important;
+}
+
+/* Force light mode background for product cards when not in dark mode */
+:not(.dark) .product-card-light {
+  background-color: #F4EFE9 !important;
+}
+
+/* Ensure light mode styling overrides any dark styles */
+html:not(.dark) [style*="background: rgba(35, 35, 38"] {
+  background: #F4EFE9 !important;
+}
+
+/* Data theme based styling */
+[data-theme="light"] {
+  background-color: #F4EFE9 !important;
+}
+
+[data-theme="dark"] {
+  background-color: rgba(35, 35, 38, 0.95) !important;
 }
 .dark .text-charcoal-400, .dark .text-charcoal-600, .dark .text-charcoal-300 {
   color: #D1C7C0 !important;

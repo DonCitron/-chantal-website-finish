@@ -10,12 +10,12 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, isDarkMode, toggleDarkMode }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen">
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      <main id="main" className="flex-grow">
+      <main>
         {children}
       </main>
-      <Footer />
+      <Footer isDarkMode={isDarkMode} />
     </div>
   );
 };

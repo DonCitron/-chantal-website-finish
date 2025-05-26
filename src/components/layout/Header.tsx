@@ -1,25 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Sun, Moon, Instagram } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-// Import the social icons from LandingPage
-const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <circle cx="12" cy="12" r="10" fill="#1DB954" />
-    <path d="M8 15c2.5-1 5.5-1 8 0" stroke="#fff" strokeWidth="1.5" />
-    <path d="M9 12c2-0.7 4-0.7 6 0" stroke="#fff" strokeWidth="1.5" />
-    <path d="M10 9.5c1.3-0.3 2.7-0.3 4 0" stroke="#fff" strokeWidth="1.2" />
-  </svg>
-);
-
-const LinktreeIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M12 2v20" />
-    <path d="M17 7l-5 5-5-5" />
-    <path d="M17 17l-5-5-5 5" />
-  </svg>
-);
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -36,10 +18,10 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const sectionIds = ['home', 'ueber-mich', 'mentoring', 'course', 'kontakt'];
+  // Fix the section IDs to match what's actually on the page
+  const sectionIds = ['home', 'ueber-mich', 'mentoring', 'testimonials', 'course', 'kontakt'];
   const [activeSection, setActiveSection] = useState('home');
   
-  const [menuOpen, setMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   
   // Listen for resize
@@ -67,25 +49,36 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
     setMobileMenuOpen(false);
   }, [location]);
   
+  // Improved scroll spy logic
   useEffect(() => {
     const handleScrollSpy = () => {
-      let found = false;
-      const headerHeight = headerRef.current?.offsetHeight || 100;
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sectionIds[i]);
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= headerHeight + 4) {
-            setActiveSection(sectionIds[i]);
-            found = true;
-            break;
+      const headerHeight = headerRef.current?.offsetHeight || 120;
+      const scrollPosition = window.scrollY + headerHeight + 50; // Add offset for better detection
+      
+      let currentSection = 'home';
+      
+      // Check each section
+      sectionIds.forEach((sectionId) => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = window.scrollY + rect.top;
+          const elementBottom = elementTop + element.offsetHeight;
+          
+          // If we're within this section
+          if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+            currentSection = sectionId;
           }
         }
-      }
-      if (!found) setActiveSection('home');
+      });
+      
+      setActiveSection(currentSection);
     };
+
     window.addEventListener('scroll', handleScrollSpy, { passive: true });
+    // Run initially
     handleScrollSpy();
+    
     return () => window.removeEventListener('scroll', handleScrollSpy);
   }, []);
   
@@ -131,41 +124,103 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
       ref={headerRef}
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-cream-50/98 dark:bg-charcoal-900/98 backdrop-blur-md py-2 shadow-md' 
-          : 'bg-cream-50/95 dark:bg-charcoal-900/95 backdrop-blur-sm py-3'
+          ? 'backdrop-blur-md py-2 shadow-md' 
+          : 'backdrop-blur-sm py-3'
       } ${showHeader ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'} transition-transform transition-opacity duration-300`}
+      style={{
+        background: isDarkMode 
+          ? 'rgba(35, 35, 38, 0.95)' 
+          : 'rgba(248, 245, 240, 0.95)' // Zurück zum hellen Hintergrund
+      }}
     >
       <div className="w-full flex flex-col items-center bg-cream-50/98 dark:bg-charcoal-900/98 backdrop-blur-md shadow-sm"
       style={{
         background: isDarkMode 
           ? 'rgba(35, 35, 38, 0.98)' 
-          : 'rgba(244, 239, 233, 0.98)',
+          : 'rgba(248, 245, 240, 0.98)', // Zurück zum hellen Hintergrund
         borderBottom: '1px solid rgba(209, 124, 107, 0.2)'
       }}>
         {/* Logo / Brand centered in top bar */}
-        <div className="flex items-center justify-center w-full px-4 py-3">
-          <a href="/" className="text-3xl font-bold text-center">
-            Open <span style={{ color: '#D17C6B' }}>Mind</span> <span style={{ color: '#3B3737' }} className="dark:text-white">Circle</span>
+        <div className="flex items-center justify-center w-full px-4 py-3 relative">
+          <a href="/" className="text-center" style={{ 
+            fontSize: isDesktop ? '72px' : '48px',
+            fontWeight: 700, 
+            letterSpacing: '-1px', 
+            color: isDarkMode ? 'rgb(255, 255, 255)' : '#D17C6B',
+            textShadow: isDarkMode 
+              ? 'rgba(0, 0, 0, 0.3) 0px 2px 8px' 
+              : 'rgba(0, 0, 0, 0.1) 0px 1px 3px, rgba(255, 255, 255, 0.8) 0px 0px 8px',
+            maxWidth: isDesktop ? 'none' : 'calc(100% - 140px)',
+            lineHeight: isDesktop ? 'normal' : '1.1'
+          }}>
+            Open Mind Circle
           </a>
           
-          {/* Dark Mode Toggle positioned absolute right */}
-          <div className="absolute right-4">
+          {/* Dark Mode Toggle UND Mobile Menu Button positioned absolute right */}
+          <div className="absolute right-4 flex items-center gap-2" style={{
+            transform: isDesktop ? 'none' : 'scale(0.9)'
+          }}>
+            {/* Mobile Menu Button - nur auf Mobile sichtbar */}
+            {!isDesktop && (
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg transition-colors"
+                style={{
+                  color: isDarkMode ? '#ffffff' : '#D17C6B',
+                  backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(209, 124, 107, 0.1)',
+                  border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(209, 124, 107, 0.2)'}`
+                }}
+                aria-label="Open mobile menu"
+              >
+                {mobileMenuOpen ? 
+                  <X size={20} color={isDarkMode ? '#ffffff' : '#D17C6B'} /> : 
+                  <Menu size={20} color={isDarkMode ? '#ffffff' : '#D17C6B'} />
+                }
+              </button>
+            )}
+            
+            {/* Mode indicator - nur auf Desktop sichtbar */}
+            {isDesktop && (
+              <span style={{ 
+                fontSize: '12px',
+                color: isDarkMode ? '#ffffff' : '#D17C6B',
+                fontWeight: 'bold',
+                padding: '4px 8px',
+                backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(209, 124, 107, 0.15)',
+                borderRadius: '4px'
+              }}>
+                {isDarkMode ? 'DARK' : 'LIGHT'}
+              </span>
+            )}
+            
+            {/* Dark Mode Toggle Button */}
             <button
               onClick={() => {
+                console.log('Dark mode toggle clicked! Current mode:', isDarkMode);
                 toggleDarkMode();
                 localStorage.setItem('colorMode', document.documentElement.classList.contains('dark') ? 'light' : 'dark');
               }}
-              className="flex items-center p-2 rounded-full hover:bg-charcoal-100 dark:hover:bg-charcoal-800 transition-colors"
+              className="flex items-center rounded-full transition-colors"
+              style={{
+                padding: isDesktop ? '12px' : '8px',
+                backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(209, 124, 107, 0.15)',
+                color: isDarkMode ? '#ffffff' : '#D17C6B',
+                border: `2px solid ${isDarkMode ? '#ffffff' : '#D17C6B'}`,
+                cursor: 'pointer'
+              }}
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              {isDarkMode ? 
+                <Sun size={isDesktop ? 24 : 20} color="#ffffff" /> : 
+                <Moon size={isDesktop ? 24 : 20} color="#D17C6B" />
+              }
             </button>
           </div>
         </div>
         
-        {/* Navigation Bar below logo */}
-        <div className="w-full border-t border-gray-200 dark:border-gray-800">
-          {isDesktop ? (
+        {/* Navigation Bar below logo - NUR für Desktop */}
+        {isDesktop && (
+          <div className="w-full border-t border-gray-200 dark:border-gray-800">
             <nav className="flex items-center justify-center space-x-12 py-4 px-4">
               <a 
                 href="#home" 
@@ -210,19 +265,8 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 Kontakt
               </a>
             </nav>
-          ) : (
-            <div className="flex items-center justify-end py-2 px-4">
-              {/* Mobile Menu Button */}
-              <button 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-[#3B3737] dark:text-white"
-                aria-label="Open mobile menu"
-              >
-                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
         
         {/* Mobile Menu */}
         <AnimatePresence>
@@ -231,11 +275,11 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="w-full bg-cream-50/98 dark:bg-charcoal-900/98 overflow-hidden"
+              className="w-full overflow-hidden"
               style={{
                 background: isDarkMode 
                   ? 'rgba(35, 35, 38, 0.98)' 
-                  : 'rgba(244, 239, 233, 0.98)'
+                  : 'linear-gradient(135deg, #D17C6B 0%, #E8A498 100%)'
               }}
             >
               <nav className="flex flex-col p-4 space-y-4">
@@ -286,6 +330,75 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Add CSS styles for nav-link */}
+      <style>{`
+        .nav-link {
+          color: ${isDarkMode ? '#e5e7eb' : '#2D2A2A'};
+          text-decoration: none;
+          padding: ${isDesktop ? '8px 16px' : '12px 16px'};
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          position: relative;
+          display: block;
+          text-align: ${isDesktop ? 'center' : 'left'};
+        }
+        
+        .nav-link:hover {
+          color: ${isDarkMode ? '#ffffff' : '#D17C6B'};
+          background-color: ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(209, 124, 107, 0.15)'};
+          transform: translateY(-1px);
+        }
+        
+        .nav-link.active {
+          color: ${isDarkMode ? '#ffffff' : '#ffffff'};
+          background: ${isDarkMode 
+            ? 'rgba(255, 255, 255, 0.25)' 
+            : 'linear-gradient(135deg, #D17C6B 0%, #E8A498 100%)'};
+          font-weight: 700;
+          box-shadow: ${isDarkMode 
+            ? '0 4px 12px rgba(255, 255, 255, 0.2)' 
+            : '0 4px 12px rgba(209, 124, 107, 0.4)'};
+          transform: ${isDesktop ? 'translateY(-1px)' : 'translateX(4px)'};
+        }
+        
+        .nav-link.active::after {
+          content: '';
+          position: absolute;
+          ${isDesktop ? `
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+          ` : `
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+          `}
+          background: ${isDarkMode 
+            ? '#ffffff' 
+            : '#ffffff'};
+          border-radius: 2px;
+          box-shadow: ${isDarkMode 
+            ? '0 2px 8px rgba(255, 255, 255, 0.4)' 
+            : '0 2px 8px rgba(255, 255, 255, 0.6)'};
+        }
+
+        @media (max-width: 1023px) {
+          .nav-link.active::after {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: #ffffff;
+          }
+        }
+      `}</style>
     </header>
   );
 };
