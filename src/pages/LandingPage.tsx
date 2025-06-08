@@ -498,7 +498,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             marginBottom: 24, 
             color: '#3B3737',
             textAlign: 'center'
-          }}>Positive Mind Mentoring – <span style={{ color: 'var(--terracotta)' }}>4 Wochen</span> für dein inneres Leuchten.</h2>
+          }}>Positive Mind Mentoring – <span style={{ color: 'var(--terracotta)' }}>8 Wochen</span> für dein inneres Leuchten.</h2>
           
           <p style={{ 
             fontSize: isDesktop ? 20 : 18, 
@@ -538,7 +538,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                 height: '100%'
               }}>
                 <li style={{ marginBottom: 12 }}>•⁠  ⁠Tägliche Impulse – ehrlich, motivierend, individuell (als Sprachnachricht oder Text)</li>
-                <li style={{ marginBottom: 12 }}>•⁠  ⁠4 persönliche 1:1 Calls – mit Raum für alles, was dich bewegt</li>
+                <li style={{ marginBottom: 12 }}>•⁠  ⁠8 persönliche 1:1 Calls – mit Raum für alles, was dich bewegt</li>
                 <li style={{ marginBottom: 12 }}>•⁠  ⁠Kleine Tanzsessions in den Calls – um dich zu lockern, zu spüren, dich lebendig zu fühlen</li>
                 <li style={{ marginBottom: 12 }}>•⁠  ⁠Begleitende Meditationen – für mehr Klarheit, Ruhe und Verbindung zu dir</li>
                 <li style={{ marginBottom: 12 }}>•⁠  ⁠Alltagstaugliche Körper- und Mindsetübungen</li>
