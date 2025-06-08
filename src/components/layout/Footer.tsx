@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Instagram, Mail, MapPin, ArrowUp } from 'lucide-react';
+
 
 const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -41,14 +41,44 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
     { icon: <Mail size={18} />, url: 'mailto:chantalroeth2@web.de', label: 'Email' },
   ];
   
+  // Handle navigation with smooth scrolling
+  const handleNavClick = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    
+    // If not on home page, navigate to home first
+    if (window.location.pathname !== '/') {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+    
+    // Find the target element
+    const targetElement = document.getElementById(sectionId);
+    if (!targetElement) return;
+    
+    // Calculate the header offset (height of header + some padding)
+    const headerOffset = 120;
+    const elementPosition = targetElement.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    
+    // Scroll to the section with smooth behavior
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+    
+    // Update URL hash without scrolling
+    window.history.pushState(null, '', `#${sectionId}`);
+  };
+  
   const footerLinks = [
-    { text: 'Home', path: '/' },
-    { text: 'Über mich', path: '/#ueber-mich' },
-    { text: 'Mentoring', path: '/#mentoring' },
-    { text: 'Produkte', path: '/#course' },
-    { text: 'Kontakt', path: '/#contact' },
-    { text: 'Impressum', path: '#' },
-    { text: 'Datenschutz', path: '#' },
+    { text: 'Start', sectionId: 'home' },
+    { text: 'Über mich', sectionId: 'ueber-mich' },
+    { text: 'Mentoring', sectionId: 'mentoring' },
+    { text: 'Kundenfeedback', sectionId: 'testimonials' },
+    { text: 'Produkte', sectionId: 'course' },
+    { text: 'Kontakt', sectionId: 'kontakt' },
+    { text: 'Impressum', sectionId: 'impressum' },
+    { text: 'Datenschutz', sectionId: 'datenschutz' },
   ];
 
   return (
@@ -72,7 +102,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
               Open Mind Circle
               <span className="text-accent-600 dark:text-accent-400">.</span>
             </h3>
-            <p className="text-sm text-charcoal-200 mb-6 max-w-md">
+            <p className="text-sm text-charcoal-400 mb-6 max-w-md">
               Hier beginnt deine Reise zu mehr Leichtigkeit, Tiefe und Selbstvertrauen mit Chantal Röth.
             </p>
             <div className="flex space-x-4">
@@ -105,13 +135,14 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             <ul className="grid grid-cols-1 gap-2">
               {footerLinks.map((link, index) => (
                 <li key={index}>
-                  <Link 
-                    to={link.path}
-                    className="text-sm text-charcoal-200 hover:text-white 
-                              transition-colors duration-300"
+                  <a
+                    href={`#${link.sectionId}`}
+                    onClick={(e) => handleNavClick(e, link.sectionId)}
+                    className="text-sm text-charcoal-400 hover:text-white 
+                              transition-colors duration-300 cursor-pointer"
                   >
                     {link.text}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -134,7 +165,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
               </li>
               <li className="flex items-start gap-2 text-charcoal-200 mt-2">
                 <MapPin size={16} style={{ marginTop: 2 }} />
-                <span className="text-sm">
+                <span className="text-sm text-charcoal-400">
                   Open Mind Circle<br />
                   Sennteich 16<br />
                   68199 Mannheim

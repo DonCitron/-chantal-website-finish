@@ -233,7 +233,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               fontSize: isDesktop ? 26 : 20, 
               fontWeight: 400, 
               marginBottom: 32, 
-              color: '#FFFFFF', 
+              color: '#1A1A1A', 
               textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               lineHeight: 1.5,
               maxWidth: '700px',
@@ -334,61 +334,145 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             textAlign: 'center'
           }}>Gründerin & Begleiterin: <span style={{ color: 'var(--terracotta)' }}>Chantal Röth</span></h2>
           
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
-            <div className="w-full md:w-1/2 flex justify-center">
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: isDesktop ? 'row' : 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: isDesktop ? '60px' : '40px',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: isDesktop ? '0 40px' : '0 20px'
+          }}>
+            <div style={{
+              flex: '0 0 auto',
+              width: isDesktop ? '45%' : '100%',
+              maxWidth: '500px',
+              margin: '0 auto',
+              position: 'relative',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+            }}>
               <img
                 src="/headerpicture.jpg"
                 alt="Portrait von Chantal Röth, freundlicher Blick, rote Haare, weißer Pullover"
-                className="rounded-3xl w-full max-w-md object-cover"
                 style={{
-                  aspectRatio: '1/1',
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  aspectRatio: '3/4',
+                  objectFit: 'cover',
+                  transition: 'transform 0.3s ease',
                 }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
               />
             </div>
-            <div className="w-full md:w-1/2 space-y-6">
-              <h2 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, color: '#3B3737' }}>Ich bin Chantal – ehrlich, direkt und gleichzeitig ein sicherer Raum.</h2>
-              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
-                Früher habe ich mich selbst klein gemacht, oft angepasst und gelächelt, obwohl ich innerlich zerrüttet war. Heute stehe ich da, wo ich andere begleiten möchte: in meiner Wahrheit.
-              </p>
-              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
-                Ich habe jahrelang als Pflegekraft gearbeitet – mitten im System, mitten im Schmerz anderer. Und irgendwann gemerkt: Ich habe mich selbst vergessen.
-              </p>
-              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
-                Heute begleite ich Menschen, die sich wieder spüren wollen. Die sich nicht länger anpassen wollen, sondern echt leben.
-              </p>
-              <p style={{ fontSize: 18, color: '#3B3737', marginBottom: 16, lineHeight: 1.6 }}>
-                Was mich besonders macht? Ich spiele keine Rolle mehr. Ich zeige mich, wie ich bin – mit Herz, mit Klartext und mit dem festen Glauben, dass Veränderung möglich ist, wenn du sie willst.
-              </p>
+            <div style={{
+              flex: '1 1 auto',
+              maxWidth: isDesktop ? '600px' : '100%',
+              padding: isDesktop ? '20px 0' : '30px 0 0 0'
+            }}>
+              <h2 style={{ 
+                fontSize: isDesktop ? '32px' : '28px',
+                fontWeight: 700, 
+                marginBottom: '24px', 
+                color: '#3B3737',
+                lineHeight: 1.3
+              }}>
+                Ich bin Chantal – ehrlich, direkt und gleichzeitig ein sicherer Raum.
+              </h2>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                color: '#3B3737',
+                lineHeight: 1.7,
+                fontSize: '18px'
+              }}>
+                <p>
+                  Früher habe ich mich selbst klein gemacht, oft angepasst und gelächelt, obwohl ich innerlich zerrüttet war. Heute stehe ich da, wo ich andere begleiten möchte: in meiner Wahrheit.
+                </p>
+                <p>
+                  Ich habe jahrelang als Pflegekraft gearbeitet – mitten im System, mitten im Schmerz anderer. Und irgendwann gemerkt: Ich habe mich selbst vergessen.
+                </p>
+                <p>
+                  Heute begleite ich Menschen, die sich wieder spüren wollen. Die sich nicht länger anpassen wollen, sondern echt leben.
+                </p>
+                <p>
+                  Was mich besonders macht? Ich spiele keine Rolle mehr. Ich zeige mich, wie ich bin – mit Herz, mit Klartext und mit dem festen Glauben, dass Veränderung möglich ist, wenn du sie willst.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Bildergalerie - neue Sektion */}
-      <section style={{ padding: '60px 0' }}>
-        <div style={{ maxWidth: isDesktop ? 1200 : '100%', margin: '0 auto', padding: isDesktop ? '0 24px' : 0 }}>
+      <section style={{ padding: isDesktop ? '60px 0' : '40px 0' }}>
+        <div style={{ 
+          maxWidth: 1200, 
+          margin: '0 auto', 
+          padding: isDesktop ? '0 24px' : '0 16px',
+          overflow: 'hidden'
+        }}>
           <div style={{ 
-            display: 'flex', 
-            gap: isDesktop ? 24 : 12, 
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            marginBottom: 24
+            display: 'flex',
+            flexDirection: isDesktop ? 'row' : 'column',
+            alignItems: 'center',
+            gap: isDesktop ? '24px' : '16px',
+            width: '100%',
+            margin: '0 auto'
           }}>
-            <ImageCard
-              src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg"
-              alt="Abstraktes Werk 1"
-              style={{ width: isDesktop ? '340px' : '300px', height: isDesktop ? '300px' : '250px' }}
-            />
-            <ImageCard
-              src="/IMG_0717.jpg"
-              alt="Frau mit Schmetterlingen"
-              style={{ width: isDesktop ? '340px' : '300px', height: isDesktop ? '300px' : '250px' }}
-            />
-            <ImageCard
-              src="/IMG_5214.jpg"
-              alt="Porträt Collage"
-              style={{ width: isDesktop ? '340px' : '300px', height: isDesktop ? '300px' : '250px' }}
-            />
+            <div style={{
+              width: isDesktop ? 'calc(33.333% - 16px)' : '100%',
+              minWidth: isDesktop ? '300px' : '100%',
+              flexShrink: 0
+            }}>
+              <ImageCard
+                src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg"
+                alt="Abstraktes Werk 1"
+                style={{ 
+                  width: '100%',
+                  height: isDesktop ? '400px' : '350px',
+                  objectFit: 'cover',
+                  objectPosition: 'center center'
+                }}
+              />
+            </div>
+            <div style={{
+              width: isDesktop ? 'calc(33.333% - 16px)' : '100%',
+              minWidth: isDesktop ? '300px' : '100%',
+              flexShrink: 0
+            }}>
+              <ImageCard
+                src="/IMG_0717.jpg"
+                alt="Frau mit Schmetterlingen"
+                style={{ 
+                  width: '100%',
+                  height: isDesktop ? '400px' : '350px',
+                  objectFit: 'cover',
+                  objectPosition: 'center 20%'  // Adjusted to show more of the head
+                }}
+              />
+            </div>
+            <div style={{
+              width: isDesktop ? 'calc(33.333% - 16px)' : '100%',
+              minWidth: isDesktop ? '300px' : '100%',
+              flexShrink: 0
+            }}>
+              <ImageCard
+                src="/IMG_5214.jpg"
+                alt="Porträt Collage"
+                style={{ 
+                  width: '100%',
+                  height: isDesktop ? '400px' : '350px',
+                  objectFit: 'cover',
+                  objectPosition: 'center center'
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -399,10 +483,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         id="mentoring" 
         data-aos="fade-up" 
         style={{ 
-          background: 'var(--gradient-accent)', 
+          backgroundColor: '#ffffff',
           padding: '80px 0',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          borderTop: '1px solid rgba(0,0,0,0.05)',
+          borderBottom: '1px solid rgba(0,0,0,0.05)'
         }}
       >
         <div style={{ maxWidth: isDesktop ? 1000 : 700, margin: '0 auto', padding: 24 }}>
