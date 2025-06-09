@@ -121,26 +121,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
                 </a>
               ))}
             </div>
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <p className="text-xs text-charcoal-400">
-                {currentYear} Chantal Röth. Alle Rechte vorbehalten.
-              </p>
-              <div className="flex space-x-4 mt-2">
-                <a 
-                  href="/legal.html#impressum" 
-                  className="text-xs text-charcoal-400 hover:text-white transition-colors"
-                >
-                  Impressum
-                </a>
-                <span className="text-charcoal-400">•</span>
-                <a 
-                  href="/legal.html#datenschutz" 
-                  className="text-xs text-charcoal-400 hover:text-white transition-colors"
-                >
-                  Datenschutz
-                </a>
-              </div>
-            </div>
+            {/* Legal links removed as requested */}
           </motion.div>
           
           {/* Quick Links */}
