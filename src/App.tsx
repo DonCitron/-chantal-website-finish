@@ -12,6 +12,7 @@ import PremiumPage from './pages/PremiumPage';
 import ProductPage from './pages/ProductPage';
 import LandingPage from './pages/LandingPage';
 import AllImagesPage from './pages/AllImagesPage';
+import LegalPage from './pages/LegalPage';
 
 // Components
 import Layout from './components/layout/Layout';
@@ -73,7 +74,8 @@ function App() {
               } />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/all-images" element={<AllImagesPage />} />
-              <Route path="*" element={<NotFoundPage />} />
+              <Route path="*" element={<NotFoundPage isDarkMode={isDarkMode} />} />
+              <Route path="/legal" element={<LegalPage />} />
             </Routes>
           </AnimatePresence>
         </Layout>

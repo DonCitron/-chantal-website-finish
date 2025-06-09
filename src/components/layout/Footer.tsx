@@ -99,11 +99,10 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             viewport={{ once: true }}
           >
             <h3 className="text-2xl font-medium mb-4">
-              Open Mind Circle
-              <span className="text-accent-600 dark:text-accent-400">.</span>
+              Chantal Röth
             </h3>
             <p className="text-sm text-charcoal-400 mb-6 max-w-md">
-              Hier beginnt deine Reise zu mehr Leichtigkeit, Tiefe und Selbstvertrauen mit Chantal Röth.
+              Hier beginnt deine Reise zu mehr Leichtigkeit, Tiefe und Selbstvertrauen.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((link, index) => (
@@ -121,6 +120,26 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
                   {link.icon}
                 </a>
               ))}
+            </div>
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <p className="text-xs text-charcoal-400">
+                © {currentYear} Chantal Röth. Alle Rechte vorbehalten.
+              </p>
+              <div className="flex space-x-4 mt-2">
+                <a 
+                  href="/legal#impressum" 
+                  className="text-xs text-charcoal-400 hover:text-white transition-colors"
+                >
+                  Impressum
+                </a>
+                <span className="text-charcoal-400">•</span>
+                <a 
+                  href="/legal#datenschutz" 
+                  className="text-xs text-charcoal-400 hover:text-white transition-colors"
+                >
+                  Datenschutz
+                </a>
+              </div>
             </div>
           </motion.div>
           
@@ -174,13 +193,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             </ul>
           </motion.div>
         </div>
-        
-        {/* Copyright */}
-        <div className="pt-8 border-t border-white/20 flex justify-between items-center">
-          <p className="text-sm text-charcoal-200">
-            © {currentYear} Open Mind Circle. Alle Rechte vorbehalten.
-          </p>
-          
+        <div className="pt-8 border-t border-white/10 flex justify-end">
           <button 
             onClick={handleScrollToTop} 
             className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all duration-300"
