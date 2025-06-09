@@ -256,7 +256,7 @@ const Header: FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                     href="legal.html#impressum"
                     className="block px-4 py-3 rounded-md text-base font-medium transition-colors text-charcoal-700 hover:bg-charcoal-50 hover:text-charcoal-900"
                   >
-                    Impressum-Datenschutz
+                    Impressum/Datenschutz
                   </a>
                 </nav>
               </motion.div>
