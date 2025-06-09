@@ -460,15 +460,23 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             Meine Arbeiten
           </h2>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            display: 'flex',
+            flexWrap: 'nowrap',
+            justifyContent: 'center',
             gap: '24px',
-            alignItems: 'start',
             width: '100%',
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '0 20px'
-          }}>
+            padding: '20px',
+            overflowX: 'auto',
+            scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch',
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none'
+            }
+          } as React.CSSProperties}>
             <motion.div 
               className="image-container"
               whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.2)' }}
@@ -485,10 +493,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                 src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg"
                 alt="Abstraktes Werk 1"
                 style={{
-                  width: '100%',
-                  height: isDesktop ? '400px' : '350px',
+                  width: '300px',
+                  height: '400px',
                   objectFit: 'cover',
-                  objectPosition: 'center center'
+                  objectPosition: 'center center',
+                  flexShrink: 0
                 }}
               />
             </motion.div>
@@ -508,10 +517,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                 src="/IMG_0717.jpg"
                 alt="Frau mit Schmetterlingen"
                 style={{
-                  width: '100%',
-                  height: isDesktop ? '400px' : '350px',
+                  width: '300px',
+                  height: '400px',
                   objectFit: 'cover',
-                  objectPosition: 'center 20%'
+                  objectPosition: 'center 20%',
+                  flexShrink: 0
                 }}
               />
             </motion.div>
@@ -531,10 +541,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                 src="/IMG_5214.jpg"
                 alt="Porträt Collage"
                 style={{
-                  width: '100%',
-                  height: isDesktop ? '400px' : '350px',
+                  width: '300px',
+                  height: '400px',
                   objectFit: 'cover',
-                  objectPosition: 'center center'
+                  objectPosition: 'center center',
+                  flexShrink: 0
                 }}
               />
             </motion.div>
