@@ -77,8 +77,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
     { text: 'Kundenfeedback', sectionId: 'testimonials' },
     { text: 'Produkte', sectionId: 'course' },
     { text: 'Kontakt', sectionId: 'kontakt' },
-    { text: 'Impressum', sectionId: 'impressum' },
-    { text: 'Datenschutz', sectionId: 'datenschutz' },
+    { text: 'Impressum-Datenschutz', sectionId: 'impressum' },
   ];
 
   return (
