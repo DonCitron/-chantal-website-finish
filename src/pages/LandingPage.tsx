@@ -1,74 +1,56 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
-import { Instagram } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-import ImageCard from '../components/ui/ImageCard'; // Import ImageCard component
+import { UserCheck } from 'lucide-react';
+import ImageCard from '../components/ui/ImageCard';
 
 interface LandingPageProps {
   isDarkMode: boolean;
 }
 
-const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <circle cx="12" cy="12" r="10" fill="#1DB954" />
-    <path d="M8 15c2.5-1 5.5-1 8 0" stroke="#fff" strokeWidth="1.5" />
-    <path d="M9 12c2-0.7 4-0.7 6 0" stroke="#fff" strokeWidth="1.5" />
-    <path d="M10 9.5c1.3-0.3 2.7-0.3 4 0" stroke="#fff" strokeWidth="1.2" />
+// Icon components
+const SpotifyIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.959-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.361 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
   </svg>
 );
 
-const LinktreeIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M12 2v20" />
-    <path d="M17 7l-5 5-5-5" />
-    <path d="M17 17l-5-5-5 5" />
+const LinktreeIcon = ({ style }: { style?: React.CSSProperties }) => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style={style}>
+    <path d="M7.953 15.066c-.08 0-.16-.023-.23-.07l-2.97-1.99c-.12-.08-.19-.22-.19-.36v-4.28c0-.14.07-.28.19-.36l2.97-1.99c.14-.09.32-.09.46 0l2.97 1.99c.12.08.19.22.19.36v4.28c0 .14-.07.28-.19.36l-2.97 1.99c-.07.047-.15.07-.23.07zm-2.74-2.64l2.74 1.84 2.74-1.84v-3.84l-2.74-1.84-2.74 1.84v3.84z"/>
+    <path d="M16.047 15.066c-.08 0-.16-.023-.23-.07l-2.97-1.99c-.12-.08-.19-.22-.19-.36v-4.28c0-.14.07-.28.19-.36l2.97-1.99c.14-.09.32-.09.46 0l2.97 1.99c.12.08.19.22.19.36v4.28c0 .14-.07.28-.19.36l-2.97 1.99c-.07.047-.15.07-.23.07zm-2.74-2.64l2.74 1.84 2.74-1.84v-3.84l-2.74-1.84-2.74 1.84v3.84z"/>
+    <path d="M12 8.532c-.08 0-.16-.023-.23-.07l-2.97-1.99c-.12-.08-.19-.22-.19-.36v-4.28c0-.14.07-.28.19-.36l2.97-1.99c.14-.09.32-.09.46 0l2.97 1.99c.12.08.19.22.19.36v4.28c0 .14-.07.28-.19.36l-2.97 1.99c-.07.047-.15.07-.23.07zm-2.74-2.64l2.74 1.84 2.74-1.84v-3.84l-2.74-1.84-2.74 1.84v3.84z"/>
   </svg>
 );
 
-// Testimonial interface
-interface Testimonial {
-  quote: string;
-  author: string;
-  image?: string;
-}
-
-const productButtonStyle = (isDesktop: boolean): CSSProperties => ({
-  display: 'inline-block',
+const productButtonStyle = (isDesktop: boolean) => ({
   background: '#D17C6B',
   color: '#fff',
-  padding: isDesktop ? '10px 20px' : '10px 0',
-  borderRadius: 8,
-  textDecoration: 'none',
   fontWeight: 600,
-  marginTop: 'auto',
-  width: isDesktop ? 'auto' : '100%',
-  outline: 'none',
-  transition: 'background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.1s',
+  fontSize: isDesktop ? 18 : 16,
+  border: 'none',
+  borderRadius: 8,
+  padding: isDesktop ? '12px 24px' : '10px 20px',
+  textDecoration: 'none',
+  cursor: 'pointer',
+  transition: 'background-color 0.3s, transform 0.2s',
+  display: 'inline-block',
+  textAlign: 'center' as const,
 });
 
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  // Testimonials data
-  const testimonials: Testimonial[] = [
-    {
-      quote: "Das Mentoring hat mir geholfen, mich selbst wiederzufinden. Ich fühle mich gestärkt und verstanden.",
-      author: "Sophia K."
-    },
-    {
-      quote: "Ich hatte seit Jahren mit Selbstzweifeln zu kämpfen. Durch Chantals Mentoring habe ich gelernt, mich selbst wieder zu schätzen.",
-      author: "Markus B."
-    },
-    {
-      quote: "Ein Wendepunkt in meinem Leben. Chantal hat mir gezeigt, wie ich in schwierigen Zeiten das Positive sehen kann.",
-      author: "Laura M."
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+  
+  // Scroll to home section on initial load
+  useEffect(() => {
+    const homeSection = document.getElementById('home');
+    if (homeSection) {
+      homeSection.scrollIntoView({ behavior: 'smooth' });
     }
-  ];
+  }, []);
+
+  // Debug log
+  console.log('LandingPage rendered', { isDarkMode, isDesktop });
 
   // Smooth scroll helper
   const handleNavScroll = (id: string) => (e: React.MouseEvent) => {
@@ -79,38 +61,57 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
     }
   };
 
-  useEffect(() => { 
-    AOS.init({ 
-      once: true, 
-      duration: 800, 
-      offset: 80,
-      easing: 'ease-in-out' 
-    }); 
-  }, []);
-
   useEffect(() => {
+    // Initialize AOS
+    AOS.init({
+      once: true,
+      duration: 800,
+    });
+
+    // Handle window resize
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+      setIsDesktop(window.innerWidth >= 1024);
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isDesktop = windowWidth >= 1024;
-
   return (
-    <div style={{ width: '100%', overflowX: 'hidden', paddingTop: 0 }} role="main">
-      {/* Social Icons oben links - nur Desktop */}
+    <div style={{
+      width: '100%',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: isDarkMode ? '#121212' : '#fff',
+      color: isDarkMode ? '#fff' : '#333',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      position: 'relative'
+    }}>
+      {/* Debug section */}
+      <div style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        zIndex: 9999, 
+        background: 'red', 
+        color: 'white', 
+        padding: '10px' 
+      }}>
+        LandingPage Active - Dark: {isDarkMode ? 'Yes' : 'No'}
+      </div>
+      
+      {/* Social Icons - Desktop only */}
       <div
-        className="desktop-social-icons"
-        style={{ 
-          position: 'fixed', 
-          top: 120, 
-          left: 24, 
-          zIndex: 100, 
-          display: isDesktop ? 'flex' : 'none', 
-          flexDirection: 'column', 
+        style={{
+          position: 'fixed',
+          top: 120,
+          left: 24,
+          zIndex: 100,
+          display: isDesktop ? 'flex' : 'none',
+          flexDirection: 'column',
           gap: 24,
           background: 'rgba(244, 239, 233, 0.6)',
           padding: '16px 12px',
@@ -118,12 +119,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <a 
-          href="http://open.spotify.com/show/5aXhid2UTtgioftEV7ESPa" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          aria-label="Spotify" 
-          style={{ 
+        <a
+          href="http://open.spotify.com/show/5aXhid2UTtgioftEV7ESPa"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Spotify"
+          style={{
             color: '#3B3737',
             transition: 'transform 0.2s ease',
             transform: 'scale(1.2)'
@@ -133,12 +134,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         >
           <SpotifyIcon />
         </a>
-        <a 
-          href="https://www.instagram.com/chantiheulleise/" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          aria-label="Instagram" 
-          style={{ 
+        <a
+          href="https://www.instagram.com/chantiheulleise/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          style={{
             color: '#3B3737',
             transition: 'transform 0.2s ease',
             transform: 'scale(1.2)'
@@ -146,14 +147,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.4)'}
           onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
         >
-          <Instagram size={32} />
+          <UserCheck size={32} />
         </a>
-        <a 
-          href="https://linktr.ee/chantiheulleise" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          aria-label="Linktree" 
-          style={{ 
+        <a
+          href="https://linktr.ee/chantiheulleise"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Linktree"
+          style={{
             color: '#3B3737',
             transition: 'transform 0.2s ease',
             transform: 'scale(1.2)'
@@ -169,20 +170,36 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
       <section
         id="home"
         data-aos="fade-up"
-        className="hero-section" // Using the new CSS class
+        className="hero-section"
+        style={{
+          position: 'relative',
+          minHeight: isDesktop ? '100vh' : '100svh',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}
       >
-        <div className="hero-image-container"> {/* Using the new CSS class */}
+        <div className="hero-image-container" style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1
+        }}>
           <img
             src="/WhatsApp Image 2025-05-19 at 20.37.49.jpeg"
             alt="Abstraktes Gold-Weiß Bild mit künstlerischen Pinselstrichen"
-            style={{ 
-              position: 'absolute', 
-              top: 0, 
-              left: 0, 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'cover', 
-              zIndex: 1, 
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              zIndex: 1,
               filter: 'brightness(1.05) saturate(1.05)',
               transition: 'transform 8s ease-in-out',
               animation: 'subtle-zoom 15s infinite alternate'
@@ -190,50 +207,54 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             loading="lazy"
           />
         </div>
-        <div 
+        <div
           className="hero-overlay"
-          style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            width: '100%', 
-            height: '100%', 
-            background: isDarkMode ? 'rgba(35,35,38,0.65)' : 'rgba(0,0,0,0.4)', 
-            zIndex: 2 
-          }} 
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: isDarkMode ? 'rgba(35,35,38,0.65)' : 'rgba(0,0,0,0.4)',
+            zIndex: 2
+          }}
         />
-        <div 
-          style={{ 
-            position: 'relative', 
-            zIndex: 3, 
-            width: '100%', 
-            maxWidth: 900, 
-            margin: '0 auto', 
-            textAlign: 'center', 
-            padding: '48px 16px' 
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 3,
+            width: '100%',
+            maxWidth: 900,
+            margin: '0 auto',
+            textAlign: 'center',
+            padding: '48px 16px',
+            flex: '1 0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
           }}
         >
-          <h1 
+          <h1
             className="hero-heading"
-            style={{ 
-              fontSize: isDesktop ? 72 : 44, 
-              fontWeight: 700, 
-              marginBottom: 16, 
-              letterSpacing: -1, 
-              color: '#FFFFFF', 
+            style={{
+              fontSize: isDesktop ? 72 : 44,
+              fontWeight: 700,
+              marginBottom: 16,
+              letterSpacing: -1,
+              color: '#FFFFFF',
               textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               animation: 'fade-in 1s ease-out'
             }}
           >
             Open Mind Circle
           </h1>
-          <p 
+          <p
             className="hero-subtitle"
-            style={{ 
-              fontSize: isDesktop ? 26 : 20, 
-              fontWeight: 400, 
-              marginBottom: 32, 
-              color: '#1A1A1A', 
+            style={{
+              fontSize: isDesktop ? 26 : 20,
+              fontWeight: 400,
+              marginBottom: 32,
+              color: '#1A1A1A',
               textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               lineHeight: 1.5,
               maxWidth: '700px',
@@ -242,31 +263,31 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           >
             Hier beginnt deine Reise zu mehr Leichtigkeit, Tiefe und Selbstvertrauen.
           </p>
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: isDesktop ? 'row' : 'column', 
-            gap: 16, 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            maxWidth: isDesktop ? '100%' : '320px', 
-            margin: '0 auto' 
+          <div style={{
+            display: 'flex',
+            flexDirection: isDesktop ? 'row' : 'column',
+            gap: 16,
+            alignItems: 'center',
+            justifyContent: 'center',
+            maxWidth: isDesktop ? '100%' : '320px',
+            margin: '0 auto'
           }}
           >
             <a
               href="#mentoring"
               onClick={handleNavScroll('mentoring')}
-              style={{ 
-                background: '#D17C6B', 
-                color: '#fff', 
-                fontWeight: 600, 
-                fontSize: isDesktop ? 20 : 18, 
-                border: 'none', 
-                borderRadius: 12, 
-                padding: isDesktop ? '16px 32px' : '14px 0', 
-                width: isDesktop ? 'auto' : '100%', 
-                textDecoration: 'none', 
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
-                letterSpacing: 0.2, 
+              style={{
+                background: '#D17C6B',
+                color: '#fff',
+                fontWeight: 600,
+                fontSize: isDesktop ? 20 : 18,
+                border: 'none',
+                borderRadius: 12,
+                padding: isDesktop ? '16px 32px' : '14px 0',
+                width: isDesktop ? 'auto' : '100%',
+                textDecoration: 'none',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                letterSpacing: 0.2,
                 textShadow: '0 1px 4px rgba(44,44,44,0.10)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
               }}
@@ -284,17 +305,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             <a
               href="#ueber-mich"
               onClick={handleNavScroll('ueber-mich')}
-              style={{ 
-                background: 'rgba(255,255,255,0.2)', 
-                color: '#FFFFFF', 
-                fontWeight: 600, 
-                fontSize: isDesktop ? 20 : 18, 
-                border: '2px solid #FFFFFF', 
-                borderRadius: 12, 
-                padding: isDesktop ? '14px 32px' : '12px 0', 
-                width: isDesktop ? 'auto' : '100%', 
-                textDecoration: 'none', 
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                color: '#FFFFFF',
+                fontWeight: 600,
+                fontSize: isDesktop ? 20 : 18,
+                border: '2px solid #FFFFFF',
+                borderRadius: 12,
+                padding: isDesktop ? '14px 32px' : '12px 0',
+                width: isDesktop ? 'auto' : '100%',
+                textDecoration: 'none',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
                 letterSpacing: 0.2,
                 textShadow: '0 1px 4px rgba(44,44,44,0.10)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
@@ -315,10 +336,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
       </section>
 
       {/* Über mich Section */}
-      <section 
-        id="ueber-mich" 
-        data-aos="fade-up" 
-        style={{ 
+      <section
+        id="ueber-mich"
+        data-aos="fade-up"
+        style={{
           background: 'var(--gradient-light)',
           padding: '80px 0',
           position: 'relative',
@@ -326,16 +347,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         }}
       >
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: 24 }}>
-          <h2 style={{ 
-            fontSize: isDesktop ? 36 : 28, 
-            fontWeight: 700, 
-            marginBottom: 48, 
+          <h2 style={{
+            fontSize: isDesktop ? 36 : 28,
+            fontWeight: 700,
+            marginBottom: 48,
             color: '#3B3737',
             textAlign: 'center'
           }}>Gründerin & Begleiterin: <span style={{ color: 'var(--terracotta)' }}>Chantal Röth</span></h2>
-          
-          <div style={{ 
-            display: 'flex', 
+
+          <div style={{
+            display: 'flex',
             flexDirection: isDesktop ? 'row' : 'column',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -374,10 +395,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               maxWidth: isDesktop ? '600px' : '100%',
               padding: isDesktop ? '20px 0' : '30px 0 0 0'
             }}>
-              <h2 style={{ 
+              <h2 style={{
                 fontSize: isDesktop ? '32px' : '28px',
-                fontWeight: 700, 
-                marginBottom: '24px', 
+                fontWeight: 700,
+                marginBottom: '24px',
                 color: '#3B3737',
                 lineHeight: 1.3
               }}>
@@ -411,13 +432,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
 
       {/* Bildergalerie - neue Sektion */}
       <section style={{ padding: isDesktop ? '60px 0' : '40px 0' }}>
-        <div style={{ 
-          maxWidth: 1200, 
-          margin: '0 auto', 
+        <div style={{
+          maxWidth: 1200,
+          margin: '0 auto',
           padding: isDesktop ? '0 24px' : '0 16px',
           overflow: 'hidden'
         }}>
-          <div style={{ 
+          <div style={{
             display: 'flex',
             flexDirection: isDesktop ? 'row' : 'column',
             alignItems: 'center',
@@ -433,7 +454,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               <ImageCard
                 src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg"
                 alt="Abstraktes Werk 1"
-                style={{ 
+                style={{
                   width: '100%',
                   height: isDesktop ? '400px' : '350px',
                   objectFit: 'cover',
@@ -449,11 +470,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               <ImageCard
                 src="/IMG_0717.jpg"
                 alt="Frau mit Schmetterlingen"
-                style={{ 
+                style={{
                   width: '100%',
                   height: isDesktop ? '400px' : '350px',
                   objectFit: 'cover',
-                  objectPosition: 'center 20%'  // Adjusted to show more of the head
+                  objectPosition: 'center 20%'
                 }}
               />
             </div>
@@ -465,7 +486,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               <ImageCard
                 src="/IMG_5214.jpg"
                 alt="Porträt Collage"
-                style={{ 
+                style={{
                   width: '100%',
                   height: isDesktop ? '400px' : '350px',
                   objectFit: 'cover',
@@ -477,12 +498,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         </div>
       </section>
 
-
       {/* Positive Mind Mentoring Section */}
-      <section 
-        id="mentoring" 
-        data-aos="fade-up" 
-        style={{ 
+      <section
+        id="mentoring"
+        data-aos="fade-up"
+        style={{
           backgroundColor: '#ffffff',
           padding: '80px 0',
           position: 'relative',
@@ -492,17 +512,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         }}
       >
         <div style={{ maxWidth: isDesktop ? 1000 : 700, margin: '0 auto', padding: 24 }}>
-          <h2 style={{ 
-            fontSize: isDesktop ? 42 : 32, 
-            fontWeight: 700, 
-            marginBottom: 24, 
+          <h2 style={{
+            fontSize: isDesktop ? 42 : 32,
+            fontWeight: 700,
+            marginBottom: 24,
             color: '#3B3737',
             textAlign: 'center'
           }}>Positive Mind Mentoring – <span style={{ color: 'var(--terracotta)' }}>8 Wochen</span> für dein inneres Leuchten.</h2>
-          
-          <p style={{ 
-            fontSize: isDesktop ? 20 : 18, 
-            color: '#3B3737', 
+
+          <p style={{
+            fontSize: isDesktop ? 20 : 18,
+            color: '#3B3737',
             marginBottom: 40,
             lineHeight: 1.6,
             textAlign: 'center',
@@ -512,8 +532,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           }}>
             Dieses Mentoring ist für dich, wenn du weißt, dass da mehr in dir steckt – aber du gerade keinen Zugang findest.
           </p>
-          
-          <div style={{ 
+
+          <div style={{
             display: 'flex',
             flexDirection: isDesktop ? 'row' : 'column',
             gap: 40,
@@ -530,21 +550,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               minHeight: '100%'
             }}>
               <h3 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, color: '#D17C6B' }}>Was dich erwartet</h3>
-              <ul style={{ 
-                paddingLeft: 20, 
-                fontSize: isDesktop ? 18 : 16, 
+              <ul style={{
+                paddingLeft: 20,
+                fontSize: isDesktop ? 18 : 16,
                 color: '#3B3737',
                 lineHeight: 1.7,
                 height: '100%'
               }}>
-                <li style={{ marginBottom: 12 }}>•⁠  ⁠Tägliche Impulse – ehrlich, motivierend, individuell (als Sprachnachricht oder Text)</li>
-                <li style={{ marginBottom: 12 }}>•⁠  ⁠8 persönliche 1:1 Calls – mit Raum für alles, was dich bewegt</li>
-                <li style={{ marginBottom: 12 }}>•⁠  ⁠Kleine Tanzsessions in den Calls – um dich zu lockern, zu spüren, dich lebendig zu fühlen</li>
-                <li style={{ marginBottom: 12 }}>•⁠  ⁠Alltagstaugliche Körper- und Mindsetübungen</li>
-                <li>•⁠  ⁠Eine persönliche gemeinsame Abschlussreflexion – ehrlich, wertschätzend, stärkend</li>
+                <li style={{ marginBottom: 12 }}>• Tägliche Impulse – ehrlich, motivierend, individuell (als Sprachnachricht oder Text)</li>
+                <li style={{ marginBottom: 12 }}>• 8 persönliche 1:1 Calls – mit Raum für alles, was dich bewegt</li>
+                <li style={{ marginBottom: 12 }}>• Kleine Tanzsessions in den Calls – um dich zu lockern, zu spüren, dich lebendig zu fühlen</li>
+                <li style={{ marginBottom: 12 }}>• Alltagstaugliche Körper- und Mindsetübungen</li>
+                <li>• Eine persönliche gemeinsame Abschlussreflexion – ehrlich, wertschätzend, stärkend</li>
               </ul>
             </div>
-            
+
             <div style={{
               flex: 1,
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
@@ -554,9 +574,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               minHeight: '100%'
             }}>
               <h3 style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, color: '#D17C6B' }}>Das wirst du erleben</h3>
-              <ul style={{ 
-                paddingLeft: 20, 
-                fontSize: isDesktop ? 18 : 16, 
+              <ul style={{
+                paddingLeft: 20,
+                fontSize: isDesktop ? 18 : 16,
                 color: '#3B3737',
                 lineHeight: 1.7,
                 height: '100%'
@@ -576,16 +596,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               href="https://tally.so/r/m65xDk"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ 
-                display: 'inline-block', 
-                background: '#D17C6B', 
-                color: '#fff', 
-                fontWeight: 700, 
-                fontSize: isDesktop ? 22 : 20, 
-                border: 'none', 
-                borderRadius: 12, 
-                padding: isDesktop ? '18px 48px' : '16px 32px', 
-                textDecoration: 'none', 
+              style={{
+                display: 'inline-block',
+                background: '#D17C6B',
+                color: '#fff',
+                fontWeight: 700,
+                fontSize: isDesktop ? 22 : 20,
+                border: 'none',
+                borderRadius: 12,
+                padding: isDesktop ? '18px 48px' : '16px 32px',
+                textDecoration: 'none',
                 boxShadow: '0 8px 20px rgba(156,116,98,0.2)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
               }}
@@ -605,98 +625,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" data-aos="fade-up"
-        style={{
-          background: isDarkMode ? '#232326' : 'linear-gradient(135deg, #D17C6B 0%, #D9BA7F 100%)',
-          padding: isDesktop ? '80px 0' : '48px 0',
-          minHeight: 400,
-          position: 'relative',
-        }}
-      >
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: isDesktop ? 24 : '0 8px', textAlign: 'center' }}>
-          <h2 style={{ fontSize: isDesktop ? 44 : 28, fontWeight: 700, marginBottom: isDesktop ? 48 : 28, color: isDarkMode ? '#F8F5F2' : '#fff', letterSpacing: '-1px' }}>
-            Kundenfeedback
-          </h2>
-          <Swiper
-            modules={[Navigation, Pagination, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 7000, disableOnInteraction: false }}
-            loop={true}
-            style={{ paddingBottom: 40, maxWidth: 800, margin: '0 auto' }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <SwiperSlide key={index}>
-                <div style={{
-                  background: isDarkMode ? '#18181b' : '#F4EFE9',
-                  color: isDarkMode ? '#F8F5F2' : '#2E2E2E',
-                  padding: isDesktop ? '56px 56px 40px 56px' : '32px 12px 28px 12px',
-                  borderRadius: 24,
-                  boxShadow: isDarkMode ? '0 8px 40px rgba(156,116,98,0.18)' : '0 8px 40px rgba(0,0,0,0.18)',
-                  minHeight: isDesktop ? 260 : 180,
-                  maxWidth: 700,
-                  margin: '0 auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  position: 'relative',
-                }}>
-                  <p style={{ fontSize: isDesktop ? 22 : 17, fontStyle: 'italic', marginBottom: 28, color: isDarkMode ? '#F8F5F2' : '#2E2E2E', lineHeight: 1.6, textAlign: 'center', maxWidth: 600 }}>
-                    {testimonial.quote}
-                  </p>
-                  <div style={{ width: '100%', textAlign: 'center' }}>
-                    <span style={{ fontWeight: 700, color: '#D17C6B', fontSize: isDesktop ? 20 : 16 }}>
-                      – {testimonial.author}
-                    </span>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-        {/* Custom Swiper Styles */}
-        <style>{`
-          .swiper-button-next, .swiper-button-prev {
-            color: #fff;
-            top: 50%;
-            width: 48px;
-            height: 48px;
-            margin-top: -24px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.18);
-            box-shadow: 0 2px 8px rgba(156,116,98,0.10);
-            transition: background 0.2s, color 0.2s;
-          }
-          .swiper-button-next:hover, .swiper-button-prev:hover {
-            background: #D17C6B;
-            color: #fff;
-          }
-          .swiper-pagination-bullets {
-            bottom: 0 !important;
-          }
-          .swiper-pagination-bullet {
-            background: #fff;
-            opacity: 0.7;
-            width: 12px;
-            height: 12px;
-            margin: 0 4px !important;
-            transition: background 0.2s, opacity 0.2s;
-          }
-          .swiper-pagination-bullet-active {
-            background: #D17C6B;
-            opacity: 1;
-          }
-        `}</style>
-      </section>
-
       {/* Course Section (Weitere Produkte) */}
-      <section 
-        id="course" 
-        data-aos="fade-up" 
-        style={{ 
+      <section
+        id="course"
+        data-aos="fade-up"
+        style={{
           background: '#fff',
           padding: isDesktop ? '80px 0' : '48px 0',
           position: 'relative',
@@ -704,7 +637,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         }}
         className="dark:bg-[#232326]"
       >
-        <div 
+        <div
           className="section-decorative-element"
           style={{
             position: 'absolute',
@@ -715,19 +648,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             background: 'var(--gradient-terra)'
           }}
         />
-        
+
         <div style={{ maxWidth: isDesktop ? 1000 : '98%', margin: '0 auto', padding: isDesktop ? 24 : '0 8px' }}>
-          <h2 style={{ 
-            fontSize: isDesktop ? 36 : 24, 
-            fontWeight: 700, 
-            marginBottom: isDesktop ? 40 : 24, 
-            color: '#3B3737', 
-            textAlign: 'center' 
+          <h2 style={{
+            fontSize: isDesktop ? 36 : 24,
+            fontWeight: 700,
+            marginBottom: isDesktop ? 40 : 24,
+            color: '#3B3737',
+            textAlign: 'center'
           }}
           className="dark:text-white"
           >Weitere <span style={{ color: 'var(--terracotta)' }}>Produkte</span></h2>
-          
-          <div style={{ 
+
+          <div style={{
             display: 'flex',
             justifyContent: 'center',
             margin: isDesktop ? '40px auto' : '24px auto',
@@ -736,8 +669,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             gap: isDesktop ? 0 : 16
           }}>
             {/* Nur SELFLOVE Journal */}
-            <div 
-              style={{ 
+            <div
+              style={{
                 background: isDarkMode ? 'rgba(35,35,38,0.95)' : '#F4EFE9',
                 borderRadius: 16,
                 padding: isDesktop ? 24 : 16,
@@ -771,17 +704,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                 e.currentTarget.style.boxShadow = '0 8px 24px rgba(156,116,98,0.1)';
               }}
             >
-              <img 
-                src="/o_1iqqn5jphig91jntdk4b131h8cr.webp" 
-                alt="Cover des SELFLOVE Journals: Aquarellbild mit Herz und sanften Farben" 
-                style={{ 
-                  width: isDesktop ? 220 : '100%', 
+              <img
+                src="/o_1iqqn5jphig91jntdk4b131h8cr.webp"
+                alt="Cover des SELFLOVE Journals: Aquarellbild mit Herz und sanften Farben"
+                style={{
+                  width: isDesktop ? 220 : '100%',
                   maxWidth: 300,
-                  borderRadius: 12, 
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.10)', 
-                  marginBottom: 20 
-                }} 
-                loading="lazy" 
+                  borderRadius: 12,
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
+                  marginBottom: 20
+                }}
+                loading="lazy"
               />
               <h3 style={{ fontSize: isDesktop ? 22 : 18, fontWeight: 700, marginBottom: 8, color: '#3B3737' }} className="dark:text-white">SELFLOVE – Journal</h3>
               <p style={{ fontSize: isDesktop ? 20 : 17, color: '#D17C6B', fontWeight: 600, marginBottom: 12 }} className="dark:text-[#F1B6A6]">13,23 €</p>
@@ -789,10 +722,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
               <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 20, color: '#3B3737' }} className="dark:text-white">
                 Entdecke mit diesem liebevoll gestalteten Selbstliebe-Journal einen sicheren Raum, um dich selbst besser kennenzulernen.
               </p>
-              <a 
-                href="https://payhip.com/b/CpoJr" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://payhip.com/b/CpoJr"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={productButtonStyle(isDesktop)}
                 className="dark:bg-[#F1B6A6] dark:text-[#232326] focus:outline-none focus:ring-2 focus:ring-[#D17C6B] hover:bg-[#b86a5c] dark:hover:bg-[#e6a08a] hover:underline"
                 role="button"
@@ -995,13 +928,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
 
           .hero-section {
             position: relative;
-            height: 100vh; /* Adjust as needed */
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
-            overflow: hidden;
           }
 
           .hero-image-container {
@@ -1025,7 +957,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Adjust overlay color and opacity */
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1;
           }
 
@@ -1038,7 +970,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           }
 
           .hero-heading {
-            font-size: 72px; /* Adjust as needed */
+            font-size: 72px;
             font-weight: 700;
             margin-bottom: 16px;
             letter-spacing: -1px;
@@ -1048,7 +980,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           }
 
           .hero-subtitle {
-            font-size: 26px; /* Adjust as needed */
+            font-size: 26px;
             font-weight: 400;
             margin-bottom: 32px;
             color: #FFFFFF;
@@ -1060,20 +992,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
 
           .desktop-social-icons {
             position: fixed;
-            top: 120px; /* Adjust as needed */
-            left: 24px; /* Adjust as needed */
+            top: 120px;
+            left: 24px;
             z-index: 100;
             display: flex;
             flex-direction: column;
             gap: 24px;
-            background: rgba(244, 239, 233, 0.6); /* Adjust background */
+            background: rgba(244, 239, 233, 0.6);
             padding: 16px 12px;
             border-radius: 30px;
             backdrop-filter: blur(4px);
           }
 
           .desktop-social-icons a {
-            color: #3B3737; /* Adjust icon color */
+            color: #3B3737;
             transition: transform 0.2s ease;
           }
 
@@ -1082,14 +1014,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
           }
 
           @media (max-width: 1023px) {
+            .hero-section {
+              min-height: 100svh;
+            }
             .hero-heading {
-              font-size: 44px; /* Adjust for mobile */
+              font-size: 44px;
             }
             .hero-subtitle {
-              font-size: 20px; /* Adjust for mobile */
+              font-size: 20px;
             }
             .desktop-social-icons {
-              display: none; /* Hide on mobile */
+              display: none;
+            }
+            body {
+              overflow-x: hidden;
+              -webkit-overflow-scrolling: touch;
             }
           }
         `

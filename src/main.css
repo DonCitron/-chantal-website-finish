@@ -170,3 +170,51 @@ button:hover, .button:hover {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* Reset default margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Make sure html and body take full height */
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main content area */
+[role="main"] {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: visible;
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  body {
+    position: relative;
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix for iOS viewport height */
+  .hero-section {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}
