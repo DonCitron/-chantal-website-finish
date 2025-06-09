@@ -41,12 +41,9 @@ const productButtonStyle = (isDesktop: boolean) => ({
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   
-  // Scroll to home section on initial load
+  // Set initial scroll position to top
   useEffect(() => {
-    const homeSection = document.getElementById('home');
-    if (homeSection) {
-      homeSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.scrollTo(0, 0);
   }, []);
 
   // Debug log
@@ -57,7 +54,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
     e.preventDefault();
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
     }
   };
 
@@ -88,7 +88,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
       overflowX: 'hidden',
       overflowY: 'auto',
       WebkitOverflowScrolling: 'touch',
-      position: 'relative'
+      position: 'relative',
+      scrollBehavior: 'smooth',
+      margin: 0,
+      padding: 0
     }}>
       {/* Debug section */}
       <div style={{ 
@@ -166,19 +169,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         </a>
       </div>
 
-      {/* Hero Section */}
+      {/* Hero Section - Full Viewport Height */}
       <section
         id="home"
         data-aos="fade-up"
         className="hero-section"
         style={{
           position: 'relative',
-          minHeight: isDesktop ? '100vh' : '100svh',
+          height: '100vh',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          flexShrink: 0
+          overflow: 'hidden',
+          margin: 0,
+          padding: 0
         }}
       >
         <div className="hero-image-container" style={{
@@ -335,6 +340,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         </div>
       </section>
 
+      {/* Spacer to ensure content starts below viewport */}
+      <div style={{ height: '1px', visibility: 'hidden' }}></div>
+
       {/* Über mich Section */}
       <section
         id="ueber-mich"
@@ -342,6 +350,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
         style={{
           background: 'var(--gradient-light)',
           padding: '80px 0',
+          scrollMarginTop: '80px',
           position: 'relative',
           overflow: 'hidden'
         }}
