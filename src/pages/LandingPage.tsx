@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { UserCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
 import ImageCard from '../components/ui/ImageCard';
 
 interface LandingPageProps {
@@ -440,26 +441,46 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
       </section>
 
       {/* Bildergalerie - neue Sektion */}
-      <section style={{ padding: isDesktop ? '60px 0' : '40px 0' }}>
+      <section style={{ 
+        padding: isDesktop ? '80px 0' : '40px 0',
+        background: 'var(--gradient-light)'
+      }}>
         <div style={{
-          maxWidth: 1200,
+          maxWidth: '1200px',
           margin: '0 auto',
-          padding: isDesktop ? '0 24px' : '0 16px',
-          overflow: 'hidden'
+          padding: isDesktop ? '0 40px' : '0 20px',
         }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: isDesktop ? 'row' : 'column',
-            alignItems: 'center',
-            gap: isDesktop ? '24px' : '16px',
-            width: '100%',
-            margin: '0 auto'
+          <h2 style={{
+            fontSize: isDesktop ? '2.5rem' : '2rem',
+            fontWeight: 700,
+            color: '#3B3737',
+            textAlign: 'center',
+            marginBottom: '40px'
           }}>
-            <div style={{
-              width: isDesktop ? 'calc(33.333% - 16px)' : '100%',
-              minWidth: isDesktop ? '300px' : '100%',
-              flexShrink: 0
-            }}>
+            Meine Arbeiten
+          </h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '24px',
+            alignItems: 'start',
+            width: '100%',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px'
+          }}>
+            <motion.div 
+              className="image-container"
+              whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.2)' }}
+              transition={{ duration: 0.3 }}
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+              }}
+            >
               <ImageCard
                 src="/DA94D674-CA3B-42BF-A9F9-9797B1AA5426.jpg"
                 alt="Abstraktes Werk 1"
@@ -470,12 +491,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                   objectPosition: 'center center'
                 }}
               />
-            </div>
-            <div style={{
-              width: isDesktop ? 'calc(33.333% - 16px)' : '100%',
-              minWidth: isDesktop ? '300px' : '100%',
-              flexShrink: 0
-            }}>
+            </motion.div>
+            <motion.div 
+              className="image-container"
+              whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.2)' }}
+              transition={{ duration: 0.3 }}
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+              }}
+            >
               <ImageCard
                 src="/IMG_0717.jpg"
                 alt="Frau mit Schmetterlingen"
@@ -486,12 +514,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                   objectPosition: 'center 20%'
                 }}
               />
-            </div>
-            <div style={{
-              width: isDesktop ? 'calc(33.333% - 16px)' : '100%',
-              minWidth: isDesktop ? '300px' : '100%',
-              flexShrink: 0
-            }}>
+            </motion.div>
+            <motion.div 
+              className="image-container"
+              whileHover={{ y: -10, boxShadow: '0 15px 30px rgba(0,0,0,0.2)' }}
+              transition={{ duration: 0.3 }}
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+              }}
+            >
               <ImageCard
                 src="/IMG_5214.jpg"
                 alt="Porträt Collage"
@@ -502,7 +537,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode }) => {
                   objectPosition: 'center center'
                 }}
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
