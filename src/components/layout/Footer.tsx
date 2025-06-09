@@ -136,7 +136,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
                 <li key={index}>
                   {link.isExternal ? (
                     <a
-                      href={`/legal.html#${link.sectionId}`}
+                      href={`legal.html#${link.sectionId}`}
                       className="text-sm text-charcoal-400 hover:text-white 
                                 transition-colors duration-300 cursor-pointer"
                     >
