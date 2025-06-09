@@ -252,8 +252,12 @@ const Header: FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                   <MobileNavLink sectionId="course" text="Produkte" activeSection={activeSection} onClick={handleNavClick} />
                   <MobileNavLink sectionId="kontakt" text="Kontakt" activeSection={activeSection} onClick={handleNavClick} />
                   <div className="border-t border-gray-200 my-2"></div>
-                  <MobileNavLink sectionId="impressum" text="Impressum" activeSection={activeSection} onClick={handleNavClick} />
-                  <MobileNavLink sectionId="datenschutz" text="Datenschutz" activeSection={activeSection} onClick={handleNavClick} />
+                  <a
+                    href="/legal.html#impressum"
+                    className="block px-4 py-3 rounded-md text-base font-medium transition-colors text-charcoal-700 hover:bg-charcoal-50 hover:text-charcoal-900"
+                  >
+                    Impressum-Datenschutz
+                  </a>
                 </nav>
               </motion.div>
             )}

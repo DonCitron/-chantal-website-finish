@@ -71,13 +71,13 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
   };
   
   const footerLinks = [
-    { text: 'Start', sectionId: 'home' },
-    { text: 'Über mich', sectionId: 'ueber-mich' },
-    { text: 'Mentoring', sectionId: 'mentoring' },
-    { text: 'Kundenfeedback', sectionId: 'testimonials' },
-    { text: 'Produkte', sectionId: 'course' },
-    { text: 'Kontakt', sectionId: 'kontakt' },
-    { text: 'Impressum-Datenschutz', sectionId: 'impressum' },
+    { text: 'Start', sectionId: 'home', isExternal: false },
+    { text: 'Über mich', sectionId: 'ueber-mich', isExternal: false },
+    { text: 'Mentoring', sectionId: 'mentoring', isExternal: false },
+    { text: 'Kundenfeedback', sectionId: 'testimonials', isExternal: false },
+    { text: 'Produkte', sectionId: 'course', isExternal: false },
+    { text: 'Kontakt', sectionId: 'kontakt', isExternal: false },
+    { text: 'Impressum-Datenschutz', sectionId: 'impressum', isExternal: true },
   ];
 
   return (
@@ -134,14 +134,24 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             <ul className="grid grid-cols-1 gap-2">
               {footerLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={`#${link.sectionId}`}
-                    onClick={(e) => handleNavClick(e, link.sectionId)}
-                    className="text-sm text-charcoal-400 hover:text-white 
-                              transition-colors duration-300 cursor-pointer"
-                  >
-                    {link.text}
-                  </a>
+                  {link.isExternal ? (
+                    <a
+                      href={`/legal.html#${link.sectionId}`}
+                      className="text-sm text-charcoal-400 hover:text-white 
+                                transition-colors duration-300 cursor-pointer"
+                    >
+                      {link.text}
+                    </a>
+                  ) : (
+                    <a
+                      href={`#${link.sectionId}`}
+                      onClick={(e) => handleNavClick(e, link.sectionId)}
+                      className="text-sm text-charcoal-400 hover:text-white 
+                                transition-colors duration-300 cursor-pointer"
+                    >
+                      {link.text}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
